@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+body {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: auto 1fr;
+}
+
+#sidebar {
+    display: grid;
+    grid-template-rows: repeat(auto-fit, auto);
+    background-color: rgba(20, 230, 167, 0.938);
+    padding: 1rem;
+    
+}
+
+#profileDiv {
+    display: flex;
+    gap: 2rem;
+}
+
+#profileNameImageDiv {
+    display: flex;
+    flex-direction: column;
+}
+
+#profileName {
+    flex: 1;
+    max-height: 50px;
+}
+
+#profileImage {
+    flex: 1;
+    border-radius: 50%;
+}
