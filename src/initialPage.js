@@ -1,4 +1,4 @@
-import loadSidebar from './sidebar.js';
+import loadSidebar from './sidebar/sidebar.js';
 
 function load() {
     loadSidebar();

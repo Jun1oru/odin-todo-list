@@ -7,34 +7,58 @@
 
 body {
     min-height: 100vh;
-    display: grid;
-    grid-template-columns: auto 1fr;
+    display: flex;
 }
 
 #sidebar {
+    flex: 0 1 20%;
+
     display: grid;
-    grid-template-rows: repeat(auto-fit, auto);
+    grid-template-rows: auto 1fr;
+    row-gap: 5rem;
     background-color: rgba(20, 230, 167, 0.938);
     padding: 1rem;
-    
 }
 
 #profileDiv {
     display: flex;
-    gap: 2rem;
 }
 
-#profileNameImageDiv {
+#profileName {
+    font-size: 1.5rem;
+}
+
+#profileNotifications {
+    height: 1.5rem;
+    width: 1.5rem;
+
+    margin-left: auto;
+}
+
+#projectsDiv {
     display: flex;
     flex-direction: column;
 }
 
-#profileName {
-    flex: 1;
-    max-height: 50px;
+#projectsTitle {
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
-#profileImage {
-    flex: 1;
-    border-radius: 50%;
+#testProject {
+    padding-left: 1rem;
+    padding-top: 1rem;
+    display: flex;
+}
+
+#testProjectTitle {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+#testProjectDetails {
+    height: 1.3rem;
+    width: 1.3rem;
+
+    margin-left: auto;
 }
