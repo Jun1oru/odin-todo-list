@@ -1,44 +1,28 @@
-import projectDetails from '../assets/icons/details-more.svg';
+import { createProjectDom } from './projects-dom.js';
 
-function createProjectsSection() {
-    const projects = document.createElement('div');
-    projects.id = 'projectsDiv';
+let projects = [];
 
-    projects.appendChild(createProjectsTitle());
-    projects.appendChild(createProject());
-    return projects;
+class Project {
+    constructor(title, description, priority, dueDate) {
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.dueDate = dueDate;
+        this.todos = [];
+    }
+    get title() {
+        return super.title;
+    }
+    set title(title) {
+        super.title = title;
+    }
+};
+
+function createProject(title, description, priority, dueDate) {
+    projects.push(new Project(title, description, priority, dueDate));
+    createProjectDom(title, description, priority, dueDate);
 }
 
-function createProjectsTitle() {
-    const projectsTitle = document.createElement('p');
-    projectsTitle.id = 'projectsTitle';
-    projectsTitle.textContent = 'Projects';
-
-    return projectsTitle;
-}
-
-function createProject() {
-    const newProject = document.createElement('div');
-    newProject.id = 'testProject';
-
-    const newProjectTitle = document.createElement('p');
-    newProjectTitle.id = 'testProjectTitle';
-    newProjectTitle.textContent = 'Test Project';
-
-    const newProjectDetails = document.createElement('img');
-    newProjectDetails.id = 'testProjectDetails';
-    newProjectDetails.src = projectDetails;
-    newProjectDetails.alt = 'project details';
-
-    newProject.appendChild(newProjectTitle);
-    newProject.appendChild(newProjectDetails);
-    return newProject;
-}
-
-
-
-function loadProjectsSection() {
-    return createProjectsSection();
-}
-
-export default loadProjectsSection;
+console.log(projects);
+createProject('Test', 'Salut', 'ok', 'yup');
+console.log(projects);

@@ -1,5 +1,5 @@
-import loadProfile from './profile.js';
-import loadProjectsSection from './projects.js';
+import loadProfile from './profile-dom.js';
+import { loadProjectsSection } from './projects-dom.js';
 
 function createSidebar() {
     const sidebar = document.createElement('div');

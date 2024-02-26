@@ -45,20 +45,60 @@ body {
     font-weight: bold;
 }
 
-#testProject {
+#addProjectDiv {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+}
+
+#addProjectHr {
+    border: 0;
+    height: 1px;
+    background: #333;
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
+
+#addProjectBtn {
+    flex: auto;
+    border: none;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    font-weight: bold;
+}
+
+.project {
     padding-left: 1rem;
     padding-top: 1rem;
     display: flex;
 }
 
-#testProjectTitle {
+.projectTitle {
     font-size: 1.2rem;
     font-weight: bold;
 }
 
-#testProjectDetails {
+.projectDetails {
     height: 1.3rem;
     width: 1.3rem;
 
     margin-left: auto;
+}
+
+.modalDiv {
+    flex: 0 0 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+::backdrop {
+    background-image: linear-gradient(
+      45deg,
+      rgba(94, 74, 94, 1),
+      rgba(91, 86, 95, 1),
+      rgba(35, 38, 41, 1),
+      rgba(18, 19, 18, 1)
+    );
+    opacity: 0.75;
 }
