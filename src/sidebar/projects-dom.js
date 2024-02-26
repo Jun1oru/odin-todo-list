@@ -48,7 +48,7 @@ function createAddButton() {
     addButton.textContent = 'Add a new project';
     addButton.type = 'button';
     addButton.addEventListener('click', () => {
-        const dialog = document.querySelector('#projectModalDiv dialog');
+        const dialog = document.querySelector('dialog');
         dialog.showModal();
         //const projectsDiv = document.getElementById('projectsDiv');
         //projectsDiv.insertBefore(createProjectDom(), projectsDiv.lastChild);
@@ -61,10 +61,6 @@ function createAddButton() {
 
 export function createProjectModal() {
     const body = document.querySelector('body');
-
-    const modalDiv = document.createElement('div');
-    modalDiv.id = 'projectModalDiv';
-    modalDiv.classList.add('modalDiv');
 
     const dialog = document.createElement('dialog');
     dialog.classList.add('dialog');
@@ -86,15 +82,16 @@ export function createProjectModal() {
     header.appendChild(title);
     header.appendChild(closeBtn);
 
+    const form = document.createElement('form');
+    form.class = 'dialogForm';
+
     const p = document.createElement('p');
     p.textContent = 'Test paragraph';
 
     dialog.appendChild(header);
     dialog.appendChild(p);
 
-    modalDiv.appendChild(dialog);
-
-    body.appendChild(modalDiv);
+    body.appendChild(dialog);
 }
 
 export function loadProjectsSection() {
