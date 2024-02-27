@@ -277,6 +277,10 @@ label[for='lowPriorityProject'] {
     color: rgb(10, 124, 10);
 }
 
+#submitProject {
+    
+}
+
 ::backdrop {
     background-image: linear-gradient(
       45deg,

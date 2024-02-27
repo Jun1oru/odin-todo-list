@@ -97,6 +97,7 @@ function createModalHeader() {
 function createModalForm() {
     const form = document.createElement('form');
     form.classList.add('dialogForm');
+    form.method = 'dialog';
 
     // Project Title
     const divTitle = document.createElement('div');
@@ -206,20 +207,29 @@ function createModalForm() {
     const divDueDate = document.createElement('div');
     divDueDate.classList.add('inputDiv');
 
+    const date = new Date();
+    let year = date.getFullYear();
+    let month = (date.getMonth() + 1) <= 9 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
+    let day = date.getDate() <= 9 ? '0' + date.getDate() : date.getDate();
+
     const inputDueDate = document.createElement('input');
     inputDueDate.type = 'date';
+    inputDueDate.min = `${year}-${month}-${day}`;
     inputDueDate.id = 'inputProjectDueDate';
     inputDueDate.name = 'inputProjectDueDate';
     inputDueDate.required = true;
 
-    //const labelDueDate = document.createElement('label');
-    //labelDueDate.setAttribute('for', 'inputProjectDueDate');
-    //labelDueDate.textContent = 'Project Due Date';
-
     divDueDate.appendChild(inputDueDate);
-    //divDueDate.appendChild(labelDueDate);
 
     form.appendChild(divDueDate);
+
+    // Submit Button
+    const submitButton = document.createElement('input');
+    submitButton.type = 'submit';
+    submitButton.textContent = 'Submit';
+    submitButton.id = 'submitProject';
+
+    form.appendChild(submitButton);
 
     return form;
 }
