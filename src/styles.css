@@ -88,8 +88,8 @@ body {
 
 .dialog {
     margin: auto;
-    width: 20rem;
-    height: 20rem;
+    width: 25rem;
+    height: 30rem;
     font-size: 1.2rem;
     padding: 1rem;
     border: none;
@@ -101,6 +101,7 @@ body {
     padding-bottom: 1rem;
     font-weight: bold;
     font-size: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .dialogHeader > button {
@@ -108,6 +109,172 @@ body {
     margin-left: auto;
     border: none;
     border-radius: 1rem;
+}
+
+.inputDiv {
+    position: relative;
+}
+
+.inputDiv > input {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    border: none;
+    border-bottom: 1px solid #000;
+    outline: none;
+    background: transparent;
+}
+
+.inputDiv > label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0.5rem;
+    font-size: 1rem;
+    pointer-events: none;
+    transition: .5s;
+}
+
+.inputDiv > input:hover {
+    background: white;
+    filter: brightness(0.8);
+}
+
+.inputDiv > input:focus ~ label,
+.inputDiv > input:valid ~ label {
+    top: -20px;
+    left: 0;
+    font-size: 0.8rem;
+}
+
+.ulPriority {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.ulPriority > li {
+    flex: 1;
+    text-align: center;
+    margin: 1rem auto;
+}
+
+.ulPriority > li:hover {
+    filter: brightness(0.8);
+    transform: scale(1.05);
+}
+
+.ulPriority > li:active {
+    transform: scale(1.2);
+}
+
+.checkboxPriority {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+.checkboxPriority + label {
+    display: inline-block;
+    width: auto;
+    position: relative;
+    cursor: pointer;
+    padding: 1rem;
+    background: linear-gradient(
+        45deg,
+        rgba(94, 74, 94, 1),
+        rgba(91, 86, 95, 1),
+        rgba(35, 38, 41, 1),
+        rgba(18, 19, 18, 1)
+      );
+}
+
+.checkboxPriority:checked + label {
+    font-weight: bold;
+}
+
+@keyframes spin {
+    from {
+        transform: translate(-50%, -50%) rotate(0);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/*background: linear-gradient(
+        45deg,
+        rgba(35, 38, 41, 1),
+        rgba(18, 19, 18, 1),
+        rgba(94, 74, 94, 1),
+        rgba(91, 86, 95, 1)
+      );
+      */
+
+/*.ulPriority > li:has(:checked) */
+
+.checkboxPriority:checked + label {
+    transform: scale(1.05);
+    --border-radius: 1rem;
+    --border-size: 0.3rem;
+    --border-bg: conic-gradient(rgb(62, 135, 207), white, rgb(18, 68, 119), rgb(62, 135, 207));
+    --padding: 1rem;
+
+    position: relative;
+    overflow: hidden;
+    padding: calc(var(--padding) + var(--border-size));
+    border-radius: var(--border-radius);
+    display: inline-block;
+
+    &::before {
+        content: '';
+        display: block;
+        background: var(--border-bg);
+        width: calc(100% * 1.41421356237);
+        padding-bottom: calc(100% * 1.41421356237);
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 100%;
+        z-index: -2;
+        animation: spin 5s linear infinite;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: var(--border-size);
+        background: linear-gradient(
+        45deg,
+        rgba(35, 38, 41, 1),
+        rgba(18, 19, 18, 1),
+        rgba(94, 74, 94, 1),
+        rgba(91, 86, 95, 1)
+      );
+        z-index: -1;
+        border-radius: calc(var(--border-radius) - var(--border-size));
+    }
+}
+
+label[for='highPriorityProject'] {
+    color: rgb(253, 32, 32);
+}
+
+label[for='midPriorityProject'] {
+    color: rgb(243, 173, 23);
+}
+
+label[for='lowPriorityProject'] {
+    color: rgb(10, 124, 10);
 }
 
 ::backdrop {
