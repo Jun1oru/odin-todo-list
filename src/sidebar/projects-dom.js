@@ -1,5 +1,6 @@
 import projectDetailsMore from '../assets/icons/details-more.svg';
 import projectDetailsLess from '../assets/icons/details-less.svg';
+import { createProject } from './projects.js';
 
 function createProjectsSection() {
     const projects = document.createElement('div');
@@ -18,20 +19,34 @@ function createProjectsTitle() {
     return projectsTitle;
 }
 
-export function createProjectDom() {
+export function createProjectDom(title, description) {
     const newProject = document.createElement('div');
     newProject.classList.add('project');
 
     const newProjectTitle = document.createElement('p');
     newProjectTitle.classList.add('projectTitle');
-    newProjectTitle.textContent = 'Test Project';
+    newProjectTitle.textContent = `${title}`;
 
-    const newProjectDetails = document.createElement('img');
-    newProjectDetails.classList.add('projectDetails');
-    newProjectDetails.src = projectDetailsMore;
-    newProjectDetails.alt = 'project details';
+    const newProjectDetailsImg = document.createElement('img');
+    newProjectDetailsImg.classList.add('projectDetailsImg');
+    newProjectDetailsImg.src = projectDetailsMore;
+    newProjectDetailsImg.alt = 'project details';
+    newProjectDetailsImg.addEventListener('click', () => {
+        newProjectDetailsImg.src === projectDetailsMore ? newProjectDetailsImg.src = projectDetailsLess : newProjectDetailsImg.src = projectDetailsMore;
+        newProjectDetails.classList.toggle('hide');
+    });
+
+    const newProjectDetails = document.createElement('div');
+    newProjectDetails.classList.add('projectDetails', 'hide');
+
+    const newProjectDescription = document.createElement('p');
+    newProjectDescription.classList.add('projectDescription');
+    newProjectDescription.textContent = `${description}`;
+
+    newProjectDetails.appendChild(newProjectDescription);
 
     newProject.appendChild(newProjectTitle);
+    newProject.appendChild(newProjectDetailsImg);
     newProject.appendChild(newProjectDetails);
     return newProject;
 }
@@ -50,8 +65,6 @@ function createAddButton() {
     addButton.addEventListener('click', () => {
         const dialog = document.querySelector('dialog');
         dialog.showModal();
-        //const projectsDiv = document.getElementById('projectsDiv');
-        //projectsDiv.insertBefore(createProjectDom(), projectsDiv.lastChild);
     });
 
     addButtonDiv.appendChild(addButtonHr);
@@ -97,7 +110,6 @@ function createModalHeader() {
 function createModalForm() {
     const form = document.createElement('form');
     form.classList.add('dialogForm');
-    form.method = 'dialog';
 
     // Project Title
     const divTitle = document.createElement('div');
@@ -150,7 +162,7 @@ function createModalForm() {
     checkboxHigh.classList.add('checkboxPriority');
     checkboxHigh.name = 'priority';
     checkboxHigh.id = 'highPriorityProject';
-    checkboxHigh.value = 'highPriorityProject';
+    checkboxHigh.value = 'high';
     checkboxHigh.checked = true;
     checkboxHigh.required = true;
 
@@ -171,7 +183,7 @@ function createModalForm() {
     checkboxMid.classList.add('checkboxPriority');
     checkboxMid.name = 'priority';
     checkboxMid.id = 'midPriorityProject';
-    checkboxMid.value = 'midPriorityProject';
+    checkboxMid.value = 'mid';
 
     const labelMid = document.createElement('label');
     labelMid.setAttribute('for', 'midPriorityProject');
@@ -190,7 +202,7 @@ function createModalForm() {
     checkboxLow.classList.add('checkboxPriority');
     checkboxLow.name = 'priority';
     checkboxLow.id = 'lowPriorityProject';
-    checkboxLow.value = 'lowPriorityProject';
+    checkboxLow.value = 'low';
 
     const labelLow = document.createElement('label');
     labelLow.setAttribute('for', 'lowPriorityProject');
@@ -228,6 +240,21 @@ function createModalForm() {
     submitButton.type = 'submit';
     submitButton.textContent = 'Submit';
     submitButton.id = 'submitProject';
+
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        createProject();
+
+        inputTitle.value = '';
+        inputDescription.value = '';
+        checkboxHigh.checked = true;
+        inputDueDate.value = '';
+
+        const dialog = document.getElementById('projectDialog');
+        dialog.close();
+    });
 
     form.appendChild(submitButton);
 

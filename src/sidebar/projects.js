@@ -18,11 +18,19 @@ class Project {
     }
 };
 
-function createProject(title, description, priority, dueDate) {
+export function createProject() {
+    const title = document.getElementById('inputProjectTitle').value;
+    const description = document.getElementById('inputProjectDescription').value;
+    const priorityOptions = document.getElementsByClassName('checkboxPriority');
+    const priorityOptionsArr = Array.from(priorityOptions);
+    let priority;
+    priorityOptionsArr.forEach((option) => {
+        if(option.checked) { priority = option.value; }
+    });
+    const dueDate = document.getElementById('inputProjectDueDate').value;
     projects.push(new Project(title, description, priority, dueDate));
-    createProjectDom(title, description, priority, dueDate);
-}
 
-console.log(projects);
-createProject('Test', 'Salut', 'ok', 'yup');
-console.log(projects);
+
+    const projectsDiv = document.getElementById('projectsDiv');
+    return projectsDiv.insertBefore(createProjectDom(title), projectsDiv.lastChild);
+}

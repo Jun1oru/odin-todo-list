@@ -79,11 +79,20 @@ body {
     font-weight: bold;
 }
 
-.projectDetails {
+.projectDetailsImg {
     height: 1.3rem;
     width: 1.3rem;
 
     margin-left: auto;
+}
+
+.projectDetails {
+    opacity: 1;
+    transition: opacity 0.5s linear;
+}
+
+.hide {
+    opacity: 0;
 }
 
 .dialog {
@@ -111,7 +120,13 @@ body {
     border-radius: 1rem;
 }
 
+.dialogForm {
+    display: flex;
+    flex-direction: column;
+}
+
 .inputDiv {
+    flex: 1;
     position: relative;
 }
 
@@ -149,6 +164,7 @@ body {
 }
 
 .ulPriority {
+    flex: 1;
     list-style: none;
     display: flex;
     gap: 1rem;
@@ -278,7 +294,24 @@ label[for='lowPriorityProject'] {
 }
 
 #submitProject {
-    
+    flex: 1;
+    margin: 0 auto;
+    width: 10rem;
+    padding: 0.5rem 0 0.5rem 0;
+    border: none;
+    border-radius: 1rem;
+    background-color: rgb(22, 160, 22);
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+#submitProject:hover {
+    filter: brightness(0.8);
+}
+
+#submitProject:active {
+    transform: scale(1.05);
 }
 
 ::backdrop {
