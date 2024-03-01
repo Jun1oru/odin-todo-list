@@ -32,5 +32,5 @@ export function createProject() {
 
 
     const projectsDiv = document.getElementById('projectsDiv');
-    return projectsDiv.insertBefore(createProjectDom(title), projectsDiv.lastChild);
+    return projectsDiv.insertBefore(createProjectDom(title, priority, dueDate), projectsDiv.lastChild);
 }

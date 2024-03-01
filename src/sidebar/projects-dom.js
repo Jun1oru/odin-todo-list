@@ -19,7 +19,7 @@ function createProjectsTitle() {
     return projectsTitle;
 }
 
-export function createProjectDom(title, description) {
+export function createProjectDom(title, priority, dueDate) {
     const newProject = document.createElement('div');
     newProject.classList.add('project');
 
@@ -39,11 +39,16 @@ export function createProjectDom(title, description) {
     const newProjectDetails = document.createElement('div');
     newProjectDetails.classList.add('projectDetails', 'hide');
 
-    const newProjectDescription = document.createElement('p');
-    newProjectDescription.classList.add('projectDescription');
-    newProjectDescription.textContent = `${description}`;
+    const newProjectPriority = document.createElement('p');
+    newProjectPriority.classList.add('projectPriority', `${priority}`);
+    newProjectPriority.textContent = `${priority} priority`;
 
-    newProjectDetails.appendChild(newProjectDescription);
+    const newProjectDueDate = document.createElement('p');
+    newProjectDueDate.classList.add('projectDueDate');
+    newProjectDueDate.textContent = `Due Date: ${dueDate}`;
+
+    newProjectDetails.appendChild(newProjectPriority);
+    newProjectDetails.appendChild(newProjectDueDate);
 
     newProject.appendChild(newProjectTitle);
     newProject.appendChild(newProjectDetailsImg);
@@ -162,7 +167,7 @@ function createModalForm() {
     checkboxHigh.classList.add('checkboxPriority');
     checkboxHigh.name = 'priority';
     checkboxHigh.id = 'highPriorityProject';
-    checkboxHigh.value = 'high';
+    checkboxHigh.value = 'High';
     checkboxHigh.checked = true;
     checkboxHigh.required = true;
 
@@ -183,11 +188,11 @@ function createModalForm() {
     checkboxMid.classList.add('checkboxPriority');
     checkboxMid.name = 'priority';
     checkboxMid.id = 'midPriorityProject';
-    checkboxMid.value = 'mid';
+    checkboxMid.value = 'Medium';
 
     const labelMid = document.createElement('label');
     labelMid.setAttribute('for', 'midPriorityProject');
-    labelMid.textContent = 'Mid';
+    labelMid.textContent = 'Medium';
 
     liCheckboxMid.appendChild(checkboxMid);
     liCheckboxMid.appendChild(labelMid);
@@ -202,7 +207,7 @@ function createModalForm() {
     checkboxLow.classList.add('checkboxPriority');
     checkboxLow.name = 'priority';
     checkboxLow.id = 'lowPriorityProject';
-    checkboxLow.value = 'low';
+    checkboxLow.value = 'Low';
 
     const labelLow = document.createElement('label');
     labelLow.setAttribute('for', 'lowPriorityProject');
