@@ -7,6 +7,7 @@ function createProjectsSection() {
     projects.id = 'projectsDiv';
 
     projects.appendChild(createProjectsTitle());
+    projects.appendChild(createProjectDom('Test', 'High', '2024-03-08'));
     projects.appendChild(createAddButton());
     return projects;
 }
@@ -22,6 +23,9 @@ function createProjectsTitle() {
 export function createProjectDom(title, priority, dueDate) {
     const newProject = document.createElement('div');
     newProject.classList.add('project');
+    newProject.addEventListener('click', () => {
+        console.log('test');
+    })
 
     const newProjectTitle = document.createElement('p');
     newProjectTitle.classList.add('projectTitle');

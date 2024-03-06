@@ -21,6 +21,41 @@ body {
     padding: 1rem;
 }
 
+#content {
+    flex: 0 1 80%;
+
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+    background-color: rgba(168, 46, 46, 0.219);
+    padding: 1rem;
+    font-size: 1.6rem;
+}
+
+#contentDetailsDiv {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+#projectPriorityDueDateDiv {
+    flex: 1 1 100%;
+
+    display: flex;
+    gap: 1rem;
+}
+
+#contentProjectPriority {
+    font-size: 1.2rem;
+}
+
+#contentProjectDueDate {
+    font-size: 1.2rem;
+    text-align: right;
+}
+
 #profileDiv {
     display: flex;
 }
