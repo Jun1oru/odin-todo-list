@@ -25,7 +25,7 @@ body {
     flex: 0 1 80%;
 
     display: grid;
-    grid-template-rows: 1fr;
+    grid-template-rows: auto 1fr;
     grid-template-columns: 1fr;
     background-color: rgba(168, 46, 46, 0.219);
     padding: 1rem;
@@ -103,6 +103,15 @@ body {
     font-weight: bold;
 }
 
+#addProjectBtn:hover {
+    filter: brightness(0.8);
+    cursor: pointer;
+}
+
+#addProjectBtn:active {
+    transform: scale(1.05);
+}
+
 .project {
     padding-left: 1rem;
     padding-top: 1rem;
@@ -118,6 +127,15 @@ body {
     grid-row: 1 / 2;
 }
 
+.projectTitle:hover {
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+.projectTitle:active {
+    transform: scale(1.05);
+}
+
 .projectDetailsImg {
     height: 1.3rem;
     width: 1.3rem;
@@ -126,6 +144,10 @@ body {
 
     grid-column: 2 / 3;
     grid-row: 1 / 2;
+}
+
+.projectDetailsImg:hover {
+    cursor: pointer;
 }
 
 .projectDetails {
@@ -196,6 +218,15 @@ body {
     border-radius: 1rem;
 }
 
+.dialogHeader > button:hover {
+    filter: brightness(0.8);
+    cursor: pointer;
+}
+
+.dialogHeader > button:active {
+    transform: scale(1.2);
+}
+
 .dialogForm {
     display: flex;
     flex-direction: column;
@@ -257,6 +288,7 @@ body {
 .ulPriority > li:hover {
     filter: brightness(0.8);
     transform: scale(1.05);
+    cursor: pointer;
 }
 
 .ulPriority > li:active {
@@ -384,6 +416,7 @@ label[for='lowPriorityProject'] {
 
 #submitProject:hover {
     filter: brightness(0.8);
+    cursor: pointer;
 }
 
 #submitProject:active {
@@ -399,4 +432,60 @@ label[for='lowPriorityProject'] {
       rgba(18, 19, 18, 1)
     );
     opacity: 0.75;
+}
+
+#tasksDiv {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.task {
+    display: flex;
+    padding: 1rem;
+    border-radius: 1rem;
+    font-size: 1.2rem;
+}
+
+.task:hover {
+    filter: brightness(0.8);
+    cursor: pointer;
+}
+
+.task:active {
+    filter: brightness(0.5);
+}
+
+.taskDate {
+    margin-left: auto;
+}
+
+.highTask {
+    background-color: rgba(253, 32, 32, 0.329);
+}
+
+.mediumTask {
+    background-color: rgba(243, 173, 23, 0.349);
+}
+
+.lowTask {
+    background-color: rgba(10, 124, 10, 0.336);
+}
+
+#addTaskBtn {
+    border: none;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    font-weight: bold;
+}
+
+#addTaskBtn:hover {
+    filter: brightness(0.8);
+    cursor: pointer;
+}
+
+#addTaskBtn:active {
+    transform: scale(1.05);
 }

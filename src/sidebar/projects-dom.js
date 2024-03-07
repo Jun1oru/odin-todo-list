@@ -1,6 +1,7 @@
 import projectDetailsMore from '../assets/icons/details-more.svg';
 import projectDetailsLess from '../assets/icons/details-less.svg';
 import { createProject } from './projects.js';
+import { loadProjectIntoContent } from '../content.js';
 
 function createProjectsSection() {
     const projects = document.createElement('div');
@@ -23,13 +24,14 @@ function createProjectsTitle() {
 export function createProjectDom(title, priority, dueDate) {
     const newProject = document.createElement('div');
     newProject.classList.add('project');
-    newProject.addEventListener('click', () => {
-        console.log('test');
-    })
 
     const newProjectTitle = document.createElement('p');
     newProjectTitle.classList.add('projectTitle');
     newProjectTitle.textContent = `${title}`;
+    newProjectTitle.addEventListener('click', () => {
+        console.log('test');
+        loadProjectIntoContent(title, priority, dueDate);
+    })
 
     const newProjectDetailsImg = document.createElement('img');
     newProjectDetailsImg.classList.add('projectDetailsImg');
