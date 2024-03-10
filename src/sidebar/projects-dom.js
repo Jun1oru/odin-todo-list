@@ -8,7 +8,7 @@ function createProjectsSection() {
     projects.id = 'projectsDiv';
 
     projects.appendChild(createProjectsTitle());
-    projects.appendChild(createProjectDom('Test', 'High', '2024-03-08'));
+    projects.appendChild(createProjectDom(-1, 'Test', 'High', '2024-03-08'));
     projects.appendChild(createAddButton());
     return projects;
 }
@@ -21,9 +21,10 @@ function createProjectsTitle() {
     return projectsTitle;
 }
 
-export function createProjectDom(title, priority, dueDate) {
+export function createProjectDom(projectId, title, priority, dueDate) {
     const newProject = document.createElement('div');
     newProject.classList.add('project');
+    newProject.dataset.projectId = projectId;
 
     const newProjectTitle = document.createElement('p');
     newProjectTitle.classList.add('projectTitle');
@@ -74,7 +75,7 @@ function createAddButton() {
     addButton.textContent = 'Add a new project';
     addButton.type = 'button';
     addButton.addEventListener('click', () => {
-        const dialog = document.querySelector('dialog');
+        const dialog = document.getElementById('projectDialog');
         dialog.showModal();
     });
 

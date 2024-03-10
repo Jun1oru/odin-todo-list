@@ -389,15 +389,18 @@ body {
     }
 }
 
-label[for='highPriorityProject'] {
+label[for='highPriorityProject'],
+label[for='highPriorityTask'] {
     color: rgb(253, 32, 32);
 }
 
-label[for='midPriorityProject'] {
+label[for='midPriorityProject'],
+label[for='midPriorityTask'] {
     color: rgb(243, 173, 23);
 }
 
-label[for='lowPriorityProject'] {
+label[for='lowPriorityProject'],
+label[for='lowPriorityTask'] {
     color: rgb(10, 124, 10);
 }
 

@@ -1,14 +1,21 @@
 import { createProjectDom } from './projects-dom.js';
 
-let projects = [];
+export let projects = [];
 
 class Project {
     constructor(title, description, priority, dueDate) {
+        this.id = projects.length;
         this.title = title;
         this.description = description;
         this.priority = priority;
         this.dueDate = dueDate;
         this.todos = [];
+    }
+    get id() {
+        return super.id;
+    }
+    set id(id) {
+        super.id = id;
     }
     get title() {
         return super.title;
@@ -30,7 +37,8 @@ export function createProject() {
     const dueDate = document.getElementById('inputProjectDueDate').value;
     projects.push(new Project(title, description, priority, dueDate));
 
+    let projectId = projects.length - 1;
 
     const projectsDiv = document.getElementById('projectsDiv');
-    return projectsDiv.insertBefore(createProjectDom(title, priority, dueDate), projectsDiv.lastChild);
+    return projectsDiv.insertBefore(createProjectDom(projectId, title, priority, dueDate), projectsDiv.lastChild);
 }
