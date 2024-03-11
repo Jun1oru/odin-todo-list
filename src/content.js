@@ -165,7 +165,7 @@ function createModalForm() {
 
     const checkboxHigh = document.createElement('input');
     checkboxHigh.type = 'radio';
-    checkboxHigh.classList.add('checkboxPriority');
+    checkboxHigh.classList.add('checkboxPriorityTask');
     checkboxHigh.name = 'priority';
     checkboxHigh.id = 'highPriorityTask';
     checkboxHigh.value = 'High';
@@ -186,7 +186,7 @@ function createModalForm() {
 
     const checkboxMid = document.createElement('input');
     checkboxMid.type = 'radio';
-    checkboxMid.classList.add('checkboxPriority');
+    checkboxMid.classList.add('checkboxPriorityTask');
     checkboxMid.name = 'priority';
     checkboxMid.id = 'midPriorityTask';
     checkboxMid.value = 'Medium';
@@ -205,7 +205,7 @@ function createModalForm() {
 
     const checkboxLow = document.createElement('input');
     checkboxLow.type = 'radio';
-    checkboxLow.classList.add('checkboxPriority');
+    checkboxLow.classList.add('checkboxPriorityTask');
     checkboxLow.name = 'priority';
     checkboxLow.id = 'lowPriorityTask';
     checkboxLow.value = 'Low';
@@ -245,13 +245,14 @@ function createModalForm() {
     const submitButton = document.createElement('input');
     submitButton.type = 'submit';
     submitButton.textContent = 'Submit';
-    submitButton.id = 'submitProject';
+    submitButton.id = 'submitTask';
 
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        createTask();
+        const projectId = document.getElementById('content').dataset.projectId;
+        createTask(projectId);
 
         inputTitle.value = '';
         inputDescription.value = '';
@@ -267,7 +268,10 @@ function createModalForm() {
     return form;
 }
 
-export function loadProjectIntoContent(projectTitle, projectPriority, projectDueDate) {
+export function loadProjectIntoContent(projectId, projectTitle, projectPriority, projectDueDate) {
+    const content = document.getElementById('content');
+    content.dataset.projectId = projectId;
+
     const titleElement = document.getElementById('contentProjectTitle');
     titleElement.textContent = `${projectTitle}`;
 

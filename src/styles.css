@@ -295,7 +295,8 @@ body {
     transform: scale(1.2);
 }
 
-.checkboxPriority {
+.checkboxPriority,
+.checkboxPriorityTask {
     border: 0;
     clip: rect(0 0 0 0);
     height: 1px;
@@ -306,7 +307,8 @@ body {
     width: 1px;
 }
 
-.checkboxPriority + label {
+.checkboxPriority + label,
+.checkboxPriorityTask + label {
     display: inline-block;
     width: auto;
     position: relative;
@@ -321,7 +323,8 @@ body {
       );
 }
 
-.checkboxPriority:checked + label {
+.checkboxPriority:checked + label,
+.checkboxPriorityTask:checked + label {
     font-weight: bold;
 }
 
@@ -345,7 +348,8 @@ body {
 
 /*.ulPriority > li:has(:checked) */
 
-.checkboxPriority:checked + label {
+.checkboxPriority:checked + label,
+.checkboxPriorityTask:checked + label {
     transform: scale(1.05);
     --border-radius: 1rem;
     --border-size: 0.3rem;
@@ -404,7 +408,8 @@ label[for='lowPriorityTask'] {
     color: rgb(10, 124, 10);
 }
 
-#submitProject {
+#submitProject,
+#submitTask {
     flex: 1;
     margin: 0 auto;
     width: 10rem;
@@ -417,12 +422,14 @@ label[for='lowPriorityTask'] {
     font-size: 1rem;
 }
 
-#submitProject:hover {
+#submitProject:hover,
+#submitTask:hover {
     filter: brightness(0.8);
     cursor: pointer;
 }
 
-#submitProject:active {
+#submitProject:active, 
+#submitTask:active {
     transform: scale(1.05);
 }
 

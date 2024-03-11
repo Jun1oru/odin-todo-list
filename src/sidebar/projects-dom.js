@@ -8,7 +8,6 @@ function createProjectsSection() {
     projects.id = 'projectsDiv';
 
     projects.appendChild(createProjectsTitle());
-    projects.appendChild(createProjectDom(-1, 'Test', 'High', '2024-03-08'));
     projects.appendChild(createAddButton());
     return projects;
 }
@@ -31,7 +30,7 @@ export function createProjectDom(projectId, title, priority, dueDate) {
     newProjectTitle.textContent = `${title}`;
     newProjectTitle.addEventListener('click', () => {
         console.log('test');
-        loadProjectIntoContent(title, priority, dueDate);
+        loadProjectIntoContent(projectId, title, priority, dueDate);
     })
 
     const newProjectDetailsImg = document.createElement('img');
