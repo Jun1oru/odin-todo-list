@@ -20,7 +20,7 @@ function createProjectsTitle() {
     return projectsTitle;
 }
 
-export function createProjectDom(projectId, title, priority, dueDate) {
+export function createProjectDom(projectId, title, description, priority, dueDate) {
     const newProject = document.createElement('div');
     newProject.classList.add('project');
     newProject.dataset.projectId = projectId;
@@ -29,8 +29,7 @@ export function createProjectDom(projectId, title, priority, dueDate) {
     newProjectTitle.classList.add('projectTitle');
     newProjectTitle.textContent = `${title}`;
     newProjectTitle.addEventListener('click', () => {
-        console.log('test');
-        loadProjectIntoContent(projectId, title, priority, dueDate);
+        loadProjectIntoContent(projectId);
     })
 
     const newProjectDetailsImg = document.createElement('img');
@@ -70,7 +69,16 @@ export function editProjectDom(projectId, title, priority, dueDate) {
         if(project.dataset.projectId === projectId) { myProject = project; }
     });
 
-    //const myProjectTitle = myProject.
+    const myProjectTitle = myProject.querySelector('.projectTitle');
+    myProjectTitle.textContent = `${title}`;
+
+    const myProjectPriority = myProject.querySelector('.projectPriority');
+    myProjectPriority.textContent = `${priority} priority`;
+    myProjectPriority.classList.remove('High', 'Medium', 'Low');
+    myProjectPriority.classList.add(`${priority}`);
+
+    const myProjectDueDate = myProject.querySelector('.projectDueDate');
+    myProjectDueDate.textContent = `Due Date: ${dueDate}`;
 }
 
 function createAddButton() {

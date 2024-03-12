@@ -11,6 +11,7 @@ function createContent() {
     detailsDiv.addEventListener('click', () => {
         const dialog = document.getElementById('projectDialog');
         dialog.dataset.dialogType = 'edit';
+
         dialog.showModal();
     });
 
@@ -54,9 +55,14 @@ function createContent() {
     return content;
 }
 
-export function loadProjectIntoContent(projectId, projectTitle, projectPriority, projectDueDate) {
+export function loadProjectIntoContent(projectId) {
     const content = document.getElementById('content');
     content.dataset.projectId = projectId;
+
+    const projectTitle = projects[projectId].title;
+    const projectDescription = projects[projectId].description;
+    const projectPriority = projects[projectId].priority;
+    const projectDueDate = projects[projectId].dueDate;
 
     const titleElement = document.getElementById('contentProjectTitle');
     titleElement.textContent = `${projectTitle}`;
@@ -72,6 +78,25 @@ export function loadProjectIntoContent(projectId, projectTitle, projectPriority,
     projectTasks.forEach((task) => {
         createTaskDom(task.title, task.priority, task.dueDate);
     });
+
+    const dialogTitle = document.querySelector('.dialogHeader > p');
+    dialogTitle.textContent = 'Edit project';
+
+    const inputTitle = document.getElementById('inputProjectTitle');
+    inputTitle.value = `${projectTitle}`;
+
+    const inputDescription = document.getElementById('inputProjectDescription');
+    inputDescription.value = `${projectDescription}`;
+
+    const priorityOptions = document.getElementsByClassName('checkboxPriority');
+    const priorityOptionsArr = Array.from(priorityOptions);
+    priorityOptionsArr.forEach((option) => {
+        if(option.value === projectPriority) { option.checked = true; }
+        else { option.checked = false; }
+    });
+
+    const inputDueDate = document.getElementById('inputProjectDueDate');
+    return inputDueDate.value = `${projectDueDate}`;
 }
 
 function loadContent() {
