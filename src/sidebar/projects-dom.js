@@ -1,6 +1,6 @@
 import projectDetailsMore from '../assets/icons/details-more.svg';
 import projectDetailsLess from '../assets/icons/details-less.svg';
-import { createProject } from './projects.js';
+import { createProject, editProject } from './projects.js';
 import { loadProjectIntoContent } from '../content.js';
 
 function createProjectsSection() {
@@ -62,6 +62,17 @@ export function createProjectDom(projectId, title, priority, dueDate) {
     return newProject;
 }
 
+export function editProjectDom(projectId, title, priority, dueDate) {
+    const projects = document.getElementsByClassName('project');
+    const projectsArr = Array.from(projects);
+    let myProject;
+    projectsArr.forEach((project) => {
+        if(project.dataset.projectId === projectId) { myProject = project; }
+    });
+
+    //const myProjectTitle = myProject.
+}
+
 function createAddButton() {
     const addButtonDiv = document.createElement('div');
     addButtonDiv.id = 'addProjectDiv';
@@ -75,6 +86,7 @@ function createAddButton() {
     addButton.type = 'button';
     addButton.addEventListener('click', () => {
         const dialog = document.getElementById('projectDialog');
+        dialog.dataset.dialogType = 'create';
         dialog.showModal();
     });
 
@@ -89,6 +101,7 @@ export function createProjectModal() {
     const dialog = document.createElement('dialog');
     dialog.id = 'projectDialog';
     dialog.classList.add('dialog');
+    dialog.dataset.dialogType = 'create';
 
     dialog.appendChild(createModalHeader());
     dialog.appendChild(createModalForm());
@@ -256,14 +269,21 @@ function createModalForm() {
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        createProject();
+        const dialog = document.getElementById('projectDialog');
+        const content = document.getElementById('content');
+
+        if(dialog.dataset.dialogType === 'create') {
+            createProject();
+        }
+        else if(dialog.dataset.dialogType === 'edit'){
+            editProject(content.dataset.projectId);
+        }
 
         inputTitle.value = '';
         inputDescription.value = '';
         checkboxHigh.checked = true;
         inputDueDate.value = '';
 
-        const dialog = document.getElementById('projectDialog');
         dialog.close();
     });
 

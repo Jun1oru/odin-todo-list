@@ -1,4 +1,5 @@
 import { projects } from "../sidebar/projects.js";
+import { createTaskDom } from "./task-dom.js";
 
 class Task {
     constructor(title, description, priority, dueDate, projectId) {
@@ -28,5 +29,9 @@ export function createTask(projectId) {
     const dueDate = document.getElementById('inputTaskDueDate').value;
     projects[projectId].todos.push(new Task(title, description, priority, dueDate, projectId));
 
-    console.log(projects[projectId]);
+    return createTaskDom(title, priority, dueDate);
+}
+
+export function createTaskDebug(projectId, taskTitle, taskDescription, taskPriority, taskDueDate) {
+    projects[projectId].todos.push(new Task(taskTitle, taskDescription, taskPriority, taskDueDate, projectId));
 }
