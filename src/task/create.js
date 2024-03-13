@@ -44,7 +44,7 @@ export function createTask(projectId) {
     const id = projects[projectId].todos.length;
     projects[projectId].todos.push(new Task(id, title, description, priority, dueDate, projectId));
 
-    return createTaskDom(projectId, id, title, priority, dueDate);
+    return createTaskDom(projectId, id);
 }
 
 export function createTaskDebug(id, projectId, taskTitle, taskDescription, taskPriority, taskDueDate) {

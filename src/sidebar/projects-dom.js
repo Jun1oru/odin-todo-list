@@ -102,7 +102,7 @@ function createAddButton() {
         const dialog = document.getElementById('projectDialog');
         dialog.dataset.dialogType = 'create';
 
-        const dialogTitle = document.querySelector('#projectDialog .dialogHeader p');
+        const dialogTitle = dialog.querySelector('.dialogHeader p');
         dialogTitle.textContent = 'Add a new project';
 
         const dialogInputs = document.querySelectorAll('#projectDialog .dialogForm input');

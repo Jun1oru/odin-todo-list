@@ -175,15 +175,21 @@ function createModalForm() {
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        const projectId = document.getElementById('content').dataset.projectId;
-        createTask(projectId);
+        const dialog = document.getElementById('taskDialog');
+        const content = document.getElementById('content');
+
+        if(dialog.dataset.dialogType === 'create') {
+            createTask(content.dataset.projectId);
+        }
+        else if(dialog.dataset.dialogType === 'edit') {
+            console.log('editTask');
+        }
 
         inputTitle.value = '';
         inputDescription.value = '';
         checkboxHigh.checked = true;
         inputDueDate.value = '';
-
-        const dialog = document.getElementById('taskDialog');
+        
         dialog.close();
     });
 
@@ -192,7 +198,12 @@ function createModalForm() {
     return form;
 }
 
-export function createTaskDom(projectId, id, title, priority, dueDate) {
+export function createTaskDom(projectId, id) {
+    const title = projects[projectId].todos[id].title;
+    const description = projects[projectId].todos[id].description;
+    const priority = projects[projectId].todos[id].priority;
+    const dueDate = projects[projectId].todos[id].dueDate;
+
     const tasksDiv = document.getElementById('tasksDiv');
 
     const task = document.createElement('div');
@@ -200,6 +211,32 @@ export function createTaskDom(projectId, id, title, priority, dueDate) {
     if(priority === 'High') { task.classList.add('highTask'); }
     else if(priority === 'Medium') { task.classList.add('mediumTask'); }
     else if(priority === 'Low') { task.classList.add('lowTask'); }
+    task.addEventListener('click', () => {
+        const dialog = document.getElementById('taskDialog');
+        dialog.dataset.dialogType = 'edit';
+        
+        const dialogTitle = dialog.querySelector('.dialogHeader p');
+        dialogTitle.textContent = 'Edit project';
+
+        const inputTitle = document.getElementById('inputTaskTitle');
+        //projects[projectId].todos[projectId].title
+        inputTitle.value = `${title}`;
+
+        const inputDescription = document.getElementById('inputTaskDescription');
+        inputDescription.value = `${description}`;
+
+        const priorityOptions = document.getElementsByClassName('checkboxPriorityTask')
+        const priorityOptionsArr = Array.from(priorityOptions);
+        priorityOptionsArr.forEach((option) => {
+            if(option.value === priority) { option.checked = true; }
+            else { option.checked = false; }
+        });
+
+        const inputDueDate = document.getElementById('inputTaskDueDate');
+        inputDueDate.value = `${dueDate}`;
+
+        dialog.showModal();
+    });
 
     const taskDone = document.createElement('input');
     taskDone.type = 'checkbox';

@@ -39,12 +39,24 @@ function createContent() {
     addTaskButton.type = 'button';
     addTaskButton.addEventListener('click', () => {
         const dialog = document.getElementById('taskDialog');
+        dialog.dataset.dialogType = 'create';
+
+        const dialogTitle = dialog.querySelector('.dialogHeader p');
+        dialogTitle.textContent = 'Add a new task';
+
+        const dialogInputs = dialog.querySelectorAll('.dialogForm input');
+        const dialogInputsArr = Array.from(dialogInputs);
+        dialogInputsArr.forEach((input) => {
+            if(input.type === 'submit' || input.type === 'radio') { return; }
+            input.value;
+        });
+
         dialog.showModal();
     });
 
     tasksDiv.appendChild(addTaskButton);
 
-    const deleteButton = document.createElement('button');
+    let deleteButton = document.createElement('button');
     deleteButton.id = 'deleteProjectBtn';
     deleteButton.textContent = 'Delete';
     deleteButton.type = 'button';
@@ -76,15 +88,19 @@ export function loadProjectIntoContent(projectId) {
     deleteAllTasksDom();
     const projectTasks = Array.from(projects[projectId].todos);
     projectTasks.forEach((task) => {
-        createTaskDom(projectId, task.id, task.title, task.priority, task.dueDate);
+        createTaskDom(projectId, task.id);
     });
 
-    const detailsDiv = document.getElementById('contentDetailsDiv');
+    let detailsDiv = document.getElementById('contentDetailsDiv');
+    const refreshDetailsDiv = detailsDiv.cloneNode(true);
+    detailsDiv.parentNode.replaceChild(refreshDetailsDiv, detailsDiv);
+    detailsDiv = refreshDetailsDiv.cloneNode(true);
+    refreshDetailsDiv.parentNode.replaceChild(detailsDiv, refreshDetailsDiv);
     detailsDiv.addEventListener('click', () => {
         const dialog = document.getElementById('projectDialog');
         dialog.dataset.dialogType = 'edit';
         
-        const dialogTitle = document.querySelector('.dialogHeader > p');
+        const dialogTitle = dialog.querySelector('.dialogHeader p');
         dialogTitle.textContent = 'Edit project';
 
         const inputTitle = document.getElementById('inputProjectTitle');
@@ -106,12 +122,22 @@ export function loadProjectIntoContent(projectId) {
         dialog.showModal();
     });
 
-    const deleteButton = document.getElementById('deleteProjectBtn');
-    const refreshButton = deleteButton.cloneNode(true);
-    deleteButton.parentNode.replaceChild(refreshButton, deleteButton);
-    deleteButton.addEventListener('click', () => {
-        console.log(projectId);
-    });
+    let deleteButton = document.getElementById('deleteProjectBtn');
+
+    if(projectId === 0) {
+        if(content.lastChild !== deleteButton) { return; }
+        content.removeChild(content.lastChild);
+    }
+    else {
+        content.appendChild(deleteButton);
+        const refreshButton = deleteButton.cloneNode(true);
+        deleteButton.parentNode.replaceChild(refreshButton, deleteButton);
+        deleteButton = refreshButton.cloneNode(true);
+        refreshButton.parentNode.replaceChild(deleteButton, refreshButton);
+        deleteButton.addEventListener('click', () => {
+            deleteProject(projectId);
+        });
+    }
 }
 
 function loadContent() {
