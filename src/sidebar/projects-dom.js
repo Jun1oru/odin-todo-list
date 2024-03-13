@@ -20,7 +20,7 @@ function createProjectsTitle() {
     return projectsTitle;
 }
 
-export function createProjectDom(projectId, title, description, priority, dueDate) {
+export function createProjectDom(projectId, title, priority, dueDate) {
     const newProject = document.createElement('div');
     newProject.classList.add('project');
     newProject.dataset.projectId = projectId;
@@ -62,12 +62,13 @@ export function createProjectDom(projectId, title, description, priority, dueDat
 }
 
 export function editProjectDom(projectId, title, priority, dueDate) {
-    const projects = document.getElementsByClassName('project');
+    /*const projects = document.getElementsByClassName('project');
     const projectsArr = Array.from(projects);
     let myProject;
     projectsArr.forEach((project) => {
         if(project.dataset.projectId === projectId) { myProject = project; }
-    });
+    });*/
+    const myProject = document.querySelector(`.project[data-project-id="${projectId}"]`);
 
     const myProjectTitle = myProject.querySelector('.projectTitle');
     myProjectTitle.textContent = `${title}`;
@@ -78,7 +79,12 @@ export function editProjectDom(projectId, title, priority, dueDate) {
     myProjectPriority.classList.add(`${priority}`);
 
     const myProjectDueDate = myProject.querySelector('.projectDueDate');
-    myProjectDueDate.textContent = `Due Date: ${dueDate}`;
+    return myProjectDueDate.textContent = `Due Date: ${dueDate}`;
+}
+
+export function deleteProjectDom(projectId) {
+    const myProject = document.querySelector(`.project[data-project-id="${projectId}"]`);
+    myProject.remove();
 }
 
 function createAddButton() {
@@ -95,6 +101,17 @@ function createAddButton() {
     addButton.addEventListener('click', () => {
         const dialog = document.getElementById('projectDialog');
         dialog.dataset.dialogType = 'create';
+
+        const dialogTitle = document.querySelector('#projectDialog .dialogHeader p');
+        dialogTitle.textContent = 'Add a new project';
+
+        const dialogInputs = document.querySelectorAll('#projectDialog .dialogForm input');
+        const dialogInputsArr = Array.from(dialogInputs);
+        dialogInputsArr.forEach((input) => {
+            if(input.type === 'submit' || input.type === 'radio') { return; };
+            input.value = '';
+        });
+
         dialog.showModal();
     });
 
@@ -251,14 +268,14 @@ function createModalForm() {
     const divDueDate = document.createElement('div');
     divDueDate.classList.add('inputDiv');
 
-    const date = new Date();
+    /*const date = new Date();
     let year = date.getFullYear();
     let month = (date.getMonth() + 1) <= 9 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
-    let day = date.getDate() <= 9 ? '0' + date.getDate() : date.getDate();
+    let day = date.getDate() <= 9 ? '0' + date.getDate() : date.getDate();*/
 
     const inputDueDate = document.createElement('input');
     inputDueDate.type = 'date';
-    inputDueDate.min = `${year}-${month}-${day}`;
+    //inputDueDate.min = `${year}-${month}-${day}`;
     inputDueDate.id = 'inputProjectDueDate';
     inputDueDate.name = 'inputProjectDueDate';
     inputDueDate.required = true;

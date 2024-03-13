@@ -1,4 +1,4 @@
-import { projects } from "./sidebar/projects.js";
+import { projects, deleteProject } from "./sidebar/projects.js";
 import { createTaskDom } from "./task/task-dom.js";
 import { deleteAllTasksDom } from "./task/task-dom.js";
 
@@ -8,12 +8,6 @@ function createContent() {
     
     const detailsDiv = document.createElement('div');
     detailsDiv.id = 'contentDetailsDiv';
-    detailsDiv.addEventListener('click', () => {
-        const dialog = document.getElementById('projectDialog');
-        dialog.dataset.dialogType = 'edit';
-
-        dialog.showModal();
-    });
 
     const contentProjectTitle = document.createElement('p');
     contentProjectTitle.id = 'contentProjectTitle';
@@ -50,8 +44,14 @@ function createContent() {
 
     tasksDiv.appendChild(addTaskButton);
 
+    const deleteButton = document.createElement('button');
+    deleteButton.id = 'deleteProjectBtn';
+    deleteButton.textContent = 'Delete';
+    deleteButton.type = 'button';
+
     content.appendChild(detailsDiv);
     content.appendChild(tasksDiv);
+    content.appendChild(deleteButton);
     return content;
 }
 
@@ -76,27 +76,42 @@ export function loadProjectIntoContent(projectId) {
     deleteAllTasksDom();
     const projectTasks = Array.from(projects[projectId].todos);
     projectTasks.forEach((task) => {
-        createTaskDom(task.title, task.priority, task.dueDate);
+        createTaskDom(projectId, task.id, task.title, task.priority, task.dueDate);
     });
 
-    const dialogTitle = document.querySelector('.dialogHeader > p');
-    dialogTitle.textContent = 'Edit project';
+    const detailsDiv = document.getElementById('contentDetailsDiv');
+    detailsDiv.addEventListener('click', () => {
+        const dialog = document.getElementById('projectDialog');
+        dialog.dataset.dialogType = 'edit';
+        
+        const dialogTitle = document.querySelector('.dialogHeader > p');
+        dialogTitle.textContent = 'Edit project';
 
-    const inputTitle = document.getElementById('inputProjectTitle');
-    inputTitle.value = `${projectTitle}`;
+        const inputTitle = document.getElementById('inputProjectTitle');
+        inputTitle.value = `${projectTitle}`;
 
-    const inputDescription = document.getElementById('inputProjectDescription');
-    inputDescription.value = `${projectDescription}`;
+        const inputDescription = document.getElementById('inputProjectDescription');
+        inputDescription.value = `${projectDescription}`;
 
-    const priorityOptions = document.getElementsByClassName('checkboxPriority');
-    const priorityOptionsArr = Array.from(priorityOptions);
-    priorityOptionsArr.forEach((option) => {
-        if(option.value === projectPriority) { option.checked = true; }
-        else { option.checked = false; }
+        const priorityOptions = document.getElementsByClassName('checkboxPriority');
+        const priorityOptionsArr = Array.from(priorityOptions);
+        priorityOptionsArr.forEach((option) => {
+            if(option.value === projectPriority) { option.checked = true; }
+            else { option.checked = false; }
+        });
+
+        const inputDueDate = document.getElementById('inputProjectDueDate');
+        inputDueDate.value = `${projectDueDate}`;
+
+        dialog.showModal();
     });
 
-    const inputDueDate = document.getElementById('inputProjectDueDate');
-    return inputDueDate.value = `${projectDueDate}`;
+    const deleteButton = document.getElementById('deleteProjectBtn');
+    const refreshButton = deleteButton.cloneNode(true);
+    deleteButton.parentNode.replaceChild(refreshButton, deleteButton);
+    deleteButton.addEventListener('click', () => {
+        console.log(projectId);
+    });
 }
 
 function loadContent() {

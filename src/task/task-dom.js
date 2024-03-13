@@ -1,4 +1,5 @@
 import { createTask } from "./create.js";
+import { projects } from "../sidebar/projects.js";
 
 export function createTaskModal() {
     const body = document.querySelector('body');
@@ -148,14 +149,14 @@ function createModalForm() {
     const divDueDate = document.createElement('div');
     divDueDate.classList.add('inputDiv');
 
-    const date = new Date();
+    /*const date = new Date();
     let year = date.getFullYear();
     let month = (date.getMonth() + 1) <= 9 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
-    let day = date.getDate() <= 9 ? '0' + date.getDate() : date.getDate();
+    let day = date.getDate() <= 9 ? '0' + date.getDate() : date.getDate();*/
 
     const inputDueDate = document.createElement('input');
     inputDueDate.type = 'date';
-    inputDueDate.min = `${year}-${month}-${day}`;
+    //inputDueDate.min = `${year}-${month}-${day}`;
     inputDueDate.id = 'inputTaskDueDate';
     inputDueDate.name = 'inputTaskDueDate';
     inputDueDate.required = true;
@@ -191,7 +192,7 @@ function createModalForm() {
     return form;
 }
 
-export function createTaskDom(title, priority, dueDate) {
+export function createTaskDom(projectId, id, title, priority, dueDate) {
     const tasksDiv = document.getElementById('tasksDiv');
 
     const task = document.createElement('div');
@@ -199,6 +200,14 @@ export function createTaskDom(title, priority, dueDate) {
     if(priority === 'High') { task.classList.add('highTask'); }
     else if(priority === 'Medium') { task.classList.add('mediumTask'); }
     else if(priority === 'Low') { task.classList.add('lowTask'); }
+
+    const taskDone = document.createElement('input');
+    taskDone.type = 'checkbox';
+    if(projects[projectId].todos[id].done) { taskDone.checked = true; }
+    taskDone.classList.add('taskDone');
+    taskDone.addEventListener('click', () => {
+        return projects[projectId].todos[id].done = !projects[projectId].todos[id].done;
+    });
 
     const taskTitle = document.createElement('p');
     taskTitle.classList.add('taskTitle');
@@ -208,6 +217,7 @@ export function createTaskDom(title, priority, dueDate) {
     taskDate.classList.add('taskDate');
     taskDate.textContent = `${dueDate}`;
 
+    task.appendChild(taskDone);
     task.appendChild(taskTitle);
     task.appendChild(taskDate);
 

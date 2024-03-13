@@ -40,6 +40,15 @@ body {
     gap: 1rem;
 }
 
+#contentDetailsDiv:hover {
+    filter: brightness(0.8);
+    cursor: pointer;
+}
+
+#contentDetailsDiv:active {
+    transform: scale(1.05);
+}
+
 #projectPriorityDueDateDiv {
     flex: 1 1 100%;
 
@@ -456,6 +465,12 @@ label[for='lowPriorityTask'] {
     padding: 1rem;
     border-radius: 1rem;
     font-size: 1.2rem;
+    gap: 1rem;
+}
+
+.task:has(.taskDone:checked) {
+    text-decoration: line-through;
+    filter: brightness(0.5);
 }
 
 .task:hover {
@@ -463,8 +478,16 @@ label[for='lowPriorityTask'] {
     cursor: pointer;
 }
 
+.task:hover:has(.taskDone:checked) {
+    filter: brightness(0.8);
+}
+
 .task:active {
     filter: brightness(0.5);
+}
+
+.task:active:has(.taskDone:checked) {
+    filter: brightness(1);
 }
 
 .taskDate {

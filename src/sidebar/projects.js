@@ -1,4 +1,4 @@
-import { createProjectDom, editProjectDom } from './projects-dom.js';
+import { createProjectDom, editProjectDom, deleteProjectDom } from './projects-dom.js';
 import { loadProjectIntoContent } from '../content.js';
 import { createTaskDebug } from '../task/create.js';
 
@@ -42,7 +42,7 @@ export function createProject() {
     let projectId = projects.length - 1;
 
     const projectsDiv = document.getElementById('projectsDiv');
-    return projectsDiv.insertBefore(createProjectDom(projectId, title, description, priority, dueDate), projectsDiv.lastChild);
+    return projectsDiv.insertBefore(createProjectDom(projectId, title, priority, dueDate), projectsDiv.lastChild);
 }
 
 export function editProject(projectId) {
@@ -64,7 +64,13 @@ export function editProject(projectId) {
     console.log(projects[projectId].title);
 
     editProjectDom(projectId, title, priority, dueDate);
-    return loadProjectIntoContent(projectId, title, description, priority, dueDate);
+    return loadProjectIntoContent(projectId);
+}
+
+export function deleteProject(projectId) {
+    delete projects[projectId];
+    deleteProjectDom(projectId);
+    return loadProjectIntoContent(0);
 }
 
 export function createProjectDebug(title, description, priority, dueDate) {
@@ -73,11 +79,10 @@ export function createProjectDebug(title, description, priority, dueDate) {
     let projectId = projects.length - 1;
 
     const projectsDiv = document.getElementById('projectsDiv');
-    projectsDiv.insertBefore(createProjectDom(projectId, title, description, priority, dueDate), projectsDiv.lastChild);
+    projectsDiv.insertBefore(createProjectDom(projectId, title, priority, dueDate), projectsDiv.lastChild);
 
-    createTaskDebug(projectId, "Title", "Description", "High", "2024-03-08");
-    createTaskDebug(projectId, "Title2", "Descriptiuon2", "Low", "2024-03-08");
+    createTaskDebug(0, projectId, "Title", "Description", "High", "2024-03-08");
+    createTaskDebug(1, projectId, "Title2", "Descriptiuon2", "Low", "2024-03-08");
 
-    return loadProjectIntoContent(projectId, title, description, priority, dueDate);
+    return loadProjectIntoContent(projectId);
 }
-
