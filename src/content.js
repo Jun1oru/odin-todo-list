@@ -48,7 +48,7 @@ function createContent() {
         const dialogInputsArr = Array.from(dialogInputs);
         dialogInputsArr.forEach((input) => {
             if(input.type === 'submit' || input.type === 'radio') { return; }
-            input.value;
+            input.value = '';
         });
 
         dialog.showModal();
@@ -125,11 +125,12 @@ export function loadProjectIntoContent(projectId) {
     let deleteButton = document.getElementById('deleteProjectBtn');
 
     if(projectId === 0) {
-        if(content.lastChild !== deleteButton) { return; }
-        content.removeChild(content.lastChild);
+        //if(content.lastChild !== deleteButton) { return; }
+        //content.removeChild(content.lastChild);
+        deleteButton.classList.add('hide');
     }
     else {
-        content.appendChild(deleteButton);
+        deleteButton.classList.remove('hide');
         const refreshButton = deleteButton.cloneNode(true);
         deleteButton.parentNode.replaceChild(refreshButton, deleteButton);
         deleteButton = refreshButton.cloneNode(true);

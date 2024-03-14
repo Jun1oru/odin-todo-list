@@ -61,8 +61,6 @@ export function editProject(projectId) {
     projects[projectId].priority = priority;
     projects[projectId].dueDate = dueDate;
 
-    console.log(projects[projectId].title);
-
     editProjectDom(projectId, title, priority, dueDate);
     return loadProjectIntoContent(projectId);
 }

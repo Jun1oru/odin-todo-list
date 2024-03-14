@@ -1,4 +1,5 @@
 import { createTask } from "./create.js";
+import { editTask } from "./edit.js";
 import { projects } from "../sidebar/projects.js";
 
 export function createTaskModal() {
@@ -182,7 +183,7 @@ function createModalForm() {
             createTask(content.dataset.projectId);
         }
         else if(dialog.dataset.dialogType === 'edit') {
-            console.log('editTask');
+            editTask(content.dataset.projectId, form.dataset.taskId);
         }
 
         inputTitle.value = '';
@@ -208,12 +209,16 @@ export function createTaskDom(projectId, id) {
 
     const task = document.createElement('div');
     task.classList.add('task');
+    task.dataset.taskId = id;
     if(priority === 'High') { task.classList.add('highTask'); }
     else if(priority === 'Medium') { task.classList.add('mediumTask'); }
     else if(priority === 'Low') { task.classList.add('lowTask'); }
-    task.addEventListener('click', (e) => {
+    task.addEventListener('click', () => {
         const dialog = document.getElementById('taskDialog');
         dialog.dataset.dialogType = 'edit';
+
+        const form = dialog.querySelector('form');
+        form.dataset.taskId = id;
         
         const dialogTitle = dialog.querySelector('.dialogHeader p');
         dialogTitle.textContent = 'Edit task';
@@ -260,6 +265,60 @@ export function createTaskDom(projectId, id) {
     task.appendChild(taskDate);
 
     tasksDiv.insertBefore(task, tasksDiv.lastChild);
+}
+
+export function editTaskDom(id, title, description, priority, dueDate, projectId) {
+    let myTask = document.querySelector(`.task[data-task-id="${id}"]`);
+    myTask.classList.remove('highTask', 'mediumTask', 'lowTask');
+    myTask.classList.add(`${priority.toLowerCase()}Task`);
+
+    const myTaskTitle = myTask.querySelector('.taskTitle');
+    myTaskTitle.textContent = `${title}`;
+
+    const myTaskDueDate = myTask.querySelector('.taskDate');
+    myTaskDueDate.textContent = `${dueDate}`;
+
+    const refreshMyTask = myTask.cloneNode(true);
+    myTask.parentNode.replaceChild(refreshMyTask, myTask);
+    myTask = refreshMyTask.cloneNode(true);
+    refreshMyTask.parentNode.replaceChild(myTask, refreshMyTask);
+    myTask.addEventListener('click', () => {
+        const dialog = document.getElementById('taskDialog');
+        dialog.dataset.dialogType = 'edit';
+
+        const form = dialog.querySelector('form');
+        form.dataset.taskId = id;
+        
+        const dialogTitle = dialog.querySelector('.dialogHeader p');
+        dialogTitle.textContent = 'Edit task';
+
+        const inputTitle = document.getElementById('inputTaskTitle');
+        //projects[projectId].todos[projectId].title
+        inputTitle.value = `${title}`;
+
+        const inputDescription = document.getElementById('inputTaskDescription');
+        inputDescription.value = `${description}`;
+
+        const priorityOptions = document.getElementsByClassName('checkboxPriorityTask')
+        const priorityOptionsArr = Array.from(priorityOptions);
+        priorityOptionsArr.forEach((option) => {
+            if(option.value === priority) { option.checked = true; }
+            else { option.checked = false; }
+        });
+
+        const inputDueDate = document.getElementById('inputTaskDueDate');
+        inputDueDate.value = `${dueDate}`;
+
+        dialog.showModal();
+    });
+
+    const taskDone = myTask.querySelector('.taskDone');
+    if(projects[projectId].todos[id].done) { taskDone.checked = true; }
+    taskDone.classList.add('taskDone');
+    taskDone.addEventListener('click', (e) => {
+        e.stopPropagation();
+        return projects[projectId].todos[id].done = !projects[projectId].todos[id].done;
+    });
 }
 
 export function deleteAllTasksDom() {
