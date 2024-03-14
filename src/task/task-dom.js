@@ -211,12 +211,12 @@ export function createTaskDom(projectId, id) {
     if(priority === 'High') { task.classList.add('highTask'); }
     else if(priority === 'Medium') { task.classList.add('mediumTask'); }
     else if(priority === 'Low') { task.classList.add('lowTask'); }
-    task.addEventListener('click', () => {
+    task.addEventListener('click', (e) => {
         const dialog = document.getElementById('taskDialog');
         dialog.dataset.dialogType = 'edit';
         
         const dialogTitle = dialog.querySelector('.dialogHeader p');
-        dialogTitle.textContent = 'Edit project';
+        dialogTitle.textContent = 'Edit task';
 
         const inputTitle = document.getElementById('inputTaskTitle');
         //projects[projectId].todos[projectId].title
@@ -242,7 +242,8 @@ export function createTaskDom(projectId, id) {
     taskDone.type = 'checkbox';
     if(projects[projectId].todos[id].done) { taskDone.checked = true; }
     taskDone.classList.add('taskDone');
-    taskDone.addEventListener('click', () => {
+    taskDone.addEventListener('click', (e) => {
+        e.stopPropagation();
         return projects[projectId].todos[id].done = !projects[projectId].todos[id].done;
     });
 
