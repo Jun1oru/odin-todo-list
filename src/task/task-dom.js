@@ -1,5 +1,6 @@
 import { createTask } from "./create.js";
 import { editTask } from "./edit.js";
+import { deleteTask } from "./delete.js";
 import { projects } from "../sidebar/projects.js";
 
 export function createTaskModal() {
@@ -196,6 +197,14 @@ function createModalForm() {
 
     form.appendChild(submitButton);
 
+    // Delete Button
+    const deleteButton = document.createElement('button');
+    deleteButton.type = 'button';
+    deleteButton.textContent = 'Delete';
+    deleteButton.id = 'deleteTaskBtn';
+
+    form.appendChild(deleteButton);
+
     return form;
 }
 
@@ -239,6 +248,16 @@ export function createTaskDom(projectId, id) {
 
         const inputDueDate = document.getElementById('inputTaskDueDate');
         inputDueDate.value = `${dueDate}`;
+
+        let deleteButton = document.getElementById('deleteTaskBtn');
+        const refreshButton = deleteButton.cloneNode(true);
+        deleteButton.parentNode.replaceChild(refreshButton, deleteButton);
+        deleteButton = refreshButton.cloneNode(true);
+        refreshButton.parentNode.replaceChild(deleteButton, refreshButton);
+        deleteButton.addEventListener('click', () => {
+            deleteTask(projectId, id);
+            dialog.close(); 
+        });
 
         dialog.showModal();
     });
@@ -309,6 +328,16 @@ export function editTaskDom(id, title, description, priority, dueDate, projectId
         const inputDueDate = document.getElementById('inputTaskDueDate');
         inputDueDate.value = `${dueDate}`;
 
+        let deleteButton = document.getElementById('deleteTaskBtn');
+        const refreshButton = deleteButton.cloneNode(true);
+        deleteButton.parentNode.replaceChild(refreshButton, deleteButton);
+        deleteButton = refreshButton.cloneNode(true);
+        refreshButton.parentNode.replaceChild(deleteButton, refreshButton);
+        deleteButton.addEventListener('click', () => {
+            deleteTask(projectId, id);
+            dialog.close();
+        });
+
         dialog.showModal();
     });
 
@@ -319,6 +348,11 @@ export function editTaskDom(id, title, description, priority, dueDate, projectId
         e.stopPropagation();
         return projects[projectId].todos[id].done = !projects[projectId].todos[id].done;
     });
+}
+
+export function deleteTaskDom(id) {
+    const myTask = document.querySelector(`.task[data-task-id="${id}"]`);
+    return myTask.remove();
 }
 
 export function deleteAllTasksDom() {

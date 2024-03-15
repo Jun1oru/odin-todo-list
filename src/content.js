@@ -88,6 +88,7 @@ export function loadProjectIntoContent(projectId) {
     deleteAllTasksDom();
     const projectTasks = Array.from(projects[projectId].todos);
     projectTasks.forEach((task) => {
+        if(task === undefined) { return; };
         createTaskDom(projectId, task.id);
     });
 
