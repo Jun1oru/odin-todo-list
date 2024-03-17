@@ -2,6 +2,7 @@ import projectDetailsMore from '../assets/icons/details-more.svg';
 import projectDetailsLess from '../assets/icons/details-less.svg';
 import { createProject, editProject } from './projects.js';
 import { loadProjectIntoContent } from '../content.js';
+import { format, formatDistance } from 'date-fns';
 
 function createProjectsSection() {
     const projects = document.createElement('div');
@@ -49,8 +50,10 @@ export function createProjectDom(projectId, title, priority, dueDate) {
     newProjectPriority.textContent = `${priority} priority`;
 
     const newProjectDueDate = document.createElement('p');
+    const formatDate = format(dueDate, "d MMMM yyyy");
+    const ago = formatDistance(dueDate, new Date(), { addSuffix: true });
     newProjectDueDate.classList.add('projectDueDate');
-    newProjectDueDate.textContent = `Due Date: ${dueDate}`;
+    newProjectDueDate.textContent = `Due Date: ${formatDate} (${ago})`;
 
     newProjectDetails.appendChild(newProjectPriority);
     newProjectDetails.appendChild(newProjectDueDate);
@@ -79,7 +82,9 @@ export function editProjectDom(projectId, title, priority, dueDate) {
     myProjectPriority.classList.add(`${priority}`);
 
     const myProjectDueDate = myProject.querySelector('.projectDueDate');
-    return myProjectDueDate.textContent = `Due Date: ${dueDate}`;
+    const formatDate = format(dueDate, "d MMMM yyyy");
+    const ago = formatDistance(dueDate, new Date(), { addSuffix: true });
+    return myProjectDueDate.textContent = `Due Date: ${formatDate} (${ago})`;
 }
 
 export function deleteProjectDom(projectId) {

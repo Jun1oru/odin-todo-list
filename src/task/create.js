@@ -1,15 +1,16 @@
 import { projects } from "../sidebar/projects.js";
 import { createTaskDom } from "./task-dom.js";
+import { saveInStorage } from "../storageManager.js";
 
 class Task {
-    constructor(id, title, description, priority, dueDate, projectId) {
-        this.id = id;
+    constructor(title, description, priority, dueDate, projectId, done) {
+        this.id;
         this.title = title;
         this.description = description;
         this.priority = priority;
         this.dueDate = dueDate;
         this.project = projectId;
-        this.done = false;
+        this.done = done;
     }
     get id() {
         return super.id;
@@ -41,12 +42,18 @@ export function createTask(projectId) {
         if(option.checked) { priority = option.value; }
     });
     const dueDate = document.getElementById('inputTaskDueDate').value;
-    const id = projects[projectId].todos.length;
-    projects[projectId].todos.push(new Task(id, title, description, priority, dueDate, projectId));
+    const taskId = projects[projectId].todos.length;
+    projects[projectId].todos.push(new Task(title, description, priority, dueDate, projectId, false));
+    projects[projectId].todos[taskId].id = taskId;
 
-    return createTaskDom(projectId, id);
+    saveInStorage("projects", projects);
+    
+    return createTaskDom(projectId, taskId);
 }
 
-export function createTaskDebug(id, projectId, taskTitle, taskDescription, taskPriority, taskDueDate) {
-    projects[projectId].todos.push(new Task(id, taskTitle, taskDescription, taskPriority, taskDueDate, projectId));
+export function createTaskDebug(projectId, taskTitle, taskDescription, taskPriority, taskDueDate, taskDone) {
+    projects[projectId].todos.push(new Task(taskTitle, taskDescription, taskPriority, taskDueDate, projectId, taskDone));
+
+    let taskId = projects[projectId].todos.length - 1;
+    return projects[projectId].todos[taskId].id = taskId;
 }

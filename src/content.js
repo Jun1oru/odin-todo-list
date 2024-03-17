@@ -1,6 +1,7 @@
 import { projects, deleteProject } from "./sidebar/projects.js";
 import { createTaskDom } from "./task/task-dom.js";
 import { deleteAllTasksDom } from "./task/task-dom.js";
+import { format, formatDistance} from 'date-fns';
 
 function createContent() {
     const content = document.createElement('div');
@@ -51,6 +52,9 @@ function createContent() {
             input.value = '';
         });
 
+        const dialogDeleteBtn = dialog.querySelector('.dialogForm #taskButtonsDiv #deleteTaskBtn');
+        dialogDeleteBtn.classList.add('hide');
+
         dialog.showModal();
     });
 
@@ -58,7 +62,7 @@ function createContent() {
 
     let deleteButton = document.createElement('button');
     deleteButton.id = 'deleteProjectBtn';
-    deleteButton.textContent = 'Delete';
+    deleteButton.textContent = 'Delete Project';
     deleteButton.type = 'button';
 
     content.appendChild(detailsDiv);
@@ -74,7 +78,8 @@ export function loadProjectIntoContent(projectId) {
     const projectTitle = projects[projectId].title;
     const projectDescription = projects[projectId].description;
     const projectPriority = projects[projectId].priority;
-    const projectDueDate = projects[projectId].dueDate;
+    const projectDueDate = format(projects[projectId].dueDate, "d MMMM yyyy");
+    const ago = formatDistance(projects[projectId].dueDate, new Date(), { addSuffix: true });
 
     const titleElement = document.getElementById('contentProjectTitle');
     titleElement.textContent = `${projectTitle}`;
@@ -83,12 +88,12 @@ export function loadProjectIntoContent(projectId) {
     priorityElement.textContent = `${projectPriority} Priority`;
 
     const dateElement = document.getElementById('contentProjectDueDate');
-    dateElement.textContent = `Due Date: ${projectDueDate}`;
+    dateElement.textContent = `Due Date: ${projectDueDate} (${ago})`;
 
     deleteAllTasksDom();
     const projectTasks = Array.from(projects[projectId].todos);
     projectTasks.forEach((task) => {
-        if(task === undefined) { return; };
+        if(task === undefined || task === null) { return; };
         createTaskDom(projectId, task.id);
     });
 
@@ -118,7 +123,8 @@ export function loadProjectIntoContent(projectId) {
         });
 
         const inputDueDate = document.getElementById('inputProjectDueDate');
-        inputDueDate.value = `${projectDueDate}`;
+        const dateForInput = projects[projectId].dueDate;
+        inputDueDate.value = `${dateForInput}`;
 
         dialog.showModal();
     });

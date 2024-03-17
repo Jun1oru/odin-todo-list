@@ -2,6 +2,8 @@ import { createTask } from "./create.js";
 import { editTask } from "./edit.js";
 import { deleteTask } from "./delete.js";
 import { projects } from "../sidebar/projects.js";
+import { format, formatDistance } from 'date-fns';
+import { saveInStorage } from "../storageManager.js";
 
 export function createTaskModal() {
     const body = document.querySelector('body');
@@ -167,6 +169,10 @@ function createModalForm() {
 
     form.appendChild(divDueDate);
 
+    // Div Submit + Delete
+    const buttonsDiv = document.createElement('div');
+    buttonsDiv.id = 'taskButtonsDiv';
+
     // Submit Button
     const submitButton = document.createElement('input');
     submitButton.type = 'submit';
@@ -195,15 +201,16 @@ function createModalForm() {
         dialog.close();
     });
 
-    form.appendChild(submitButton);
-
     // Delete Button
     const deleteButton = document.createElement('button');
     deleteButton.type = 'button';
-    deleteButton.textContent = 'Delete';
+    deleteButton.textContent = 'Delete Task';
     deleteButton.id = 'deleteTaskBtn';
 
-    form.appendChild(deleteButton);
+    buttonsDiv.appendChild(submitButton);
+    buttonsDiv.appendChild(deleteButton);
+
+    form.appendChild(buttonsDiv);
 
     return form;
 }
@@ -212,7 +219,8 @@ export function createTaskDom(projectId, id) {
     const title = projects[projectId].todos[id].title;
     const description = projects[projectId].todos[id].description;
     const priority = projects[projectId].todos[id].priority;
-    const dueDate = projects[projectId].todos[id].dueDate;
+    const dueDate = format(projects[projectId].todos[id].dueDate, "d MMMM yyyy");
+    const ago = formatDistance(projects[projectId].todos[id].dueDate, new Date(), { addSuffix: true });
 
     const tasksDiv = document.getElementById('tasksDiv');
 
@@ -247,9 +255,11 @@ export function createTaskDom(projectId, id) {
         });
 
         const inputDueDate = document.getElementById('inputTaskDueDate');
-        inputDueDate.value = `${dueDate}`;
+        const dateForInput = projects[projectId].todos[id].dueDate;
+        inputDueDate.value = `${dateForInput}`;
 
         let deleteButton = document.getElementById('deleteTaskBtn');
+        deleteButton.classList.remove('hide');
         const refreshButton = deleteButton.cloneNode(true);
         deleteButton.parentNode.replaceChild(refreshButton, deleteButton);
         deleteButton = refreshButton.cloneNode(true);
@@ -268,7 +278,8 @@ export function createTaskDom(projectId, id) {
     taskDone.classList.add('taskDone');
     taskDone.addEventListener('click', (e) => {
         e.stopPropagation();
-        return projects[projectId].todos[id].done = !projects[projectId].todos[id].done;
+        projects[projectId].todos[id].done = !projects[projectId].todos[id].done;
+        return saveInStorage("projects", projects);
     });
 
     const taskTitle = document.createElement('p');
@@ -277,7 +288,7 @@ export function createTaskDom(projectId, id) {
 
     const taskDate = document.createElement('p');
     taskDate.classList.add('taskDate');
-    taskDate.textContent = `${dueDate}`;
+    taskDate.textContent = `${dueDate} (${ago})`;
 
     task.appendChild(taskDone);
     task.appendChild(taskTitle);
@@ -295,7 +306,9 @@ export function editTaskDom(id, title, description, priority, dueDate, projectId
     myTaskTitle.textContent = `${title}`;
 
     const myTaskDueDate = myTask.querySelector('.taskDate');
-    myTaskDueDate.textContent = `${dueDate}`;
+    const formatDueDate = format(dueDate, "d MMMM yyyy");
+    const ago = formatDistance(projects[projectId].todos[id].dueDate, new Date(), { addSuffix: true });
+    myTaskDueDate.textContent = `${formatDueDate} (${ago})`;
 
     const refreshMyTask = myTask.cloneNode(true);
     myTask.parentNode.replaceChild(refreshMyTask, myTask);
@@ -329,6 +342,7 @@ export function editTaskDom(id, title, description, priority, dueDate, projectId
         inputDueDate.value = `${dueDate}`;
 
         let deleteButton = document.getElementById('deleteTaskBtn');
+        deleteButton.classList.remove('hide');
         const refreshButton = deleteButton.cloneNode(true);
         deleteButton.parentNode.replaceChild(refreshButton, deleteButton);
         deleteButton = refreshButton.cloneNode(true);
@@ -346,7 +360,8 @@ export function editTaskDom(id, title, description, priority, dueDate, projectId
     taskDone.classList.add('taskDone');
     taskDone.addEventListener('click', (e) => {
         e.stopPropagation();
-        return projects[projectId].todos[id].done = !projects[projectId].todos[id].done;
+        projects[projectId].todos[id].done = !projects[projectId].todos[id].done;
+        return saveInStorage("projects", projects);
     });
 }
 

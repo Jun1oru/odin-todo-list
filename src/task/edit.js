@@ -1,6 +1,6 @@
 import { projects } from "../sidebar/projects";
 import { editTaskDom } from "./task-dom";
-
+import { saveInStorage } from "../storageManager";
 
 export function editTask(projectId, id) {
     const title = document.getElementById('inputTaskTitle').value;
@@ -17,6 +17,8 @@ export function editTask(projectId, id) {
     projects[projectId].todos[id].description = description;
     projects[projectId].todos[id].priority = priority;
     projects[projectId].todos[id].dueDate = dueDate;
+
+    saveInStorage("projects", projects);
 
     return editTaskDom(id, title, description, priority, dueDate, projectId);
 }

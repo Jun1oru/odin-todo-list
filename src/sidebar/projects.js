@@ -1,10 +1,10 @@
 import { createProjectDom, editProjectDom, deleteProjectDom } from './projects-dom.js';
 import { loadProjectIntoContent } from '../content.js';
-import { createTaskDebug } from '../task/create.js';
+import { saveInStorage } from '../storageManager.js';
 
 export let projects = [];
 
-class Project {
+export class Project {
     constructor(title, description, priority, dueDate) {
         this.id = projects.length;
         this.title = title;
@@ -42,7 +42,9 @@ export function createProject() {
     let projectId = projects.length - 1;
 
     const projectsDiv = document.getElementById('projectsDiv');
-    return projectsDiv.insertBefore(createProjectDom(projectId, title, priority, dueDate), projectsDiv.lastChild);
+    projectsDiv.insertBefore(createProjectDom(projectId, title, priority, dueDate), projectsDiv.lastChild);
+
+    saveInStorage("projects", projects);
 }
 
 export function editProject(projectId) {
@@ -62,12 +64,14 @@ export function editProject(projectId) {
     projects[projectId].dueDate = dueDate;
 
     editProjectDom(projectId, title, priority, dueDate);
-    return loadProjectIntoContent(projectId);
+    loadProjectIntoContent(projectId);
+    return saveInStorage("projects", projects);
 }
 
 export function deleteProject(projectId) {
     delete projects[projectId];
     deleteProjectDom(projectId);
+    saveInStorage("projects", projects);
     return loadProjectIntoContent(0);
 }
 
@@ -77,10 +81,6 @@ export function createProjectDebug(title, description, priority, dueDate) {
     let projectId = projects.length - 1;
 
     const projectsDiv = document.getElementById('projectsDiv');
-    projectsDiv.insertBefore(createProjectDom(projectId, title, priority, dueDate), projectsDiv.lastChild);
-
-    createTaskDebug(0, projectId, "Title", "Description", "High", "2024-03-08");
-    createTaskDebug(1, projectId, "Title2", "Descriptiuon2", "Low", "2024-03-08");
-
-    return loadProjectIntoContent(projectId);
+    return projectsDiv.insertBefore(createProjectDom(projectId, title, priority, dueDate), projectsDiv.lastChild);
+    // return loadProjectIntoContent(projectId);
 }

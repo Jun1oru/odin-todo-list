@@ -417,8 +417,14 @@ label[for='lowPriorityTask'] {
     color: rgb(10, 124, 10);
 }
 
+#taskButtonsDiv {
+    display: flex;
+    gap: 1rem;
+}
+
 #submitProject,
-#submitTask {
+#submitTask,
+#deleteTaskBtn {
     flex: 1;
     margin: 0 auto;
     width: 10rem;
@@ -431,14 +437,20 @@ label[for='lowPriorityTask'] {
     font-size: 1rem;
 }
 
+#deleteTaskBtn {
+    background-color: rgb(160, 22, 22);
+}
+
 #submitProject:hover,
-#submitTask:hover {
+#submitTask:hover,
+#deleteTaskBtn:hover {
     filter: brightness(0.8);
     cursor: pointer;
 }
 
 #submitProject:active, 
-#submitTask:active {
+#submitTask:active,
+#deleteTaskBtn:active {
     transform: scale(1.05);
 }
 
