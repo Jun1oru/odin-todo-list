@@ -1,7 +1,6 @@
-import load from './initialPage.js';
-import "./styles.css";
-import { loadProjects } from './storageManager.js';
+import load from './initialPage.js'
+import './styles.css'
+import { loadProjects } from './storageManager.js'
 
-
-load();
-loadProjects();
+load()
+loadProjects()
