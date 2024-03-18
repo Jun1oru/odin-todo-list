@@ -1,373 +1,412 @@
-import { createTask } from './create.js'
-import { editTask } from './edit.js'
-import { deleteTask } from './delete.js'
-import { projects } from '../sidebar/projects.js'
-import { format, formatDistance } from 'date-fns'
-import { saveInStorage } from '../storageManager.js'
+import { createTask } from "./create.js";
+import { editTask } from "./edit.js";
+import { deleteTask } from "./delete.js";
+import { projects } from "../sidebar/projects.js";
+import { format, formatDistance } from "date-fns";
+import { saveInStorage } from "../storageManager.js";
 
-export function createTaskModal () {
-  const body = document.querySelector('body')
+export function createTaskModal() {
+  const body = document.querySelector("body");
 
-  const dialog = document.createElement('dialog')
-  dialog.id = 'taskDialog'
-  dialog.classList.add('dialog')
+  const dialog = document.createElement("dialog");
+  dialog.id = "taskDialog";
+  dialog.classList.add("dialog");
 
-  dialog.appendChild(createModalHeader())
-  dialog.appendChild(createModalForm())
+  dialog.appendChild(createModalHeader());
+  dialog.appendChild(createModalForm());
 
-  body.appendChild(dialog)
+  body.appendChild(dialog);
 }
 
-function createModalHeader () {
-  const header = document.createElement('header')
-  header.classList.add('dialogHeader')
+function createModalHeader() {
+  const header = document.createElement("header");
+  header.classList.add("dialogHeader");
 
-  const title = document.createElement('p')
-  title.textContent = 'Add a new task'
+  const title = document.createElement("p");
+  title.textContent = "Add a new task";
 
-  const closeBtn = document.createElement('button')
-  closeBtn.textContent = 'X'
-  closeBtn.autofocus = true
+  const closeBtn = document.createElement("button");
+  closeBtn.textContent = "X";
+  closeBtn.autofocus = true;
 
-  closeBtn.addEventListener('click', () => {
-    const dialog = document.getElementById('taskDialog')
-    dialog.close()
-  })
+  closeBtn.addEventListener("click", () => {
+    const dialog = document.getElementById("taskDialog");
+    dialog.close();
+  });
 
-  header.appendChild(title)
-  header.appendChild(closeBtn)
+  header.appendChild(title);
+  header.appendChild(closeBtn);
 
-  return header
+  return header;
 }
 
-function createModalForm () {
-  const form = document.createElement('form')
-  form.classList.add('dialogForm')
+function createModalForm() {
+  const form = document.createElement("form");
+  form.classList.add("dialogForm");
 
-  const divTitle = document.createElement('div')
-  divTitle.classList.add('inputDiv')
+  const divTitle = document.createElement("div");
+  divTitle.classList.add("inputDiv");
 
   // Task Title
-  const inputTitle = document.createElement('input')
-  inputTitle.type = 'text'
-  inputTitle.id = 'inputTaskTitle'
-  inputTitle.name = 'inputTaskTitle'
-  inputTitle.required = true
+  const inputTitle = document.createElement("input");
+  inputTitle.type = "text";
+  inputTitle.id = "inputTaskTitle";
+  inputTitle.name = "inputTaskTitle";
+  inputTitle.required = true;
 
-  const labelTitle = document.createElement('label')
-  labelTitle.setAttribute('for', 'inputTaskTitle')
-  labelTitle.textContent = 'Task Title'
+  const labelTitle = document.createElement("label");
+  labelTitle.setAttribute("for", "inputTaskTitle");
+  labelTitle.textContent = "Task Title";
 
-  divTitle.appendChild(inputTitle)
-  divTitle.appendChild(labelTitle)
+  divTitle.appendChild(inputTitle);
+  divTitle.appendChild(labelTitle);
 
-  form.appendChild(divTitle)
+  form.appendChild(divTitle);
 
   // Task Description
-  const divDescription = document.createElement('div')
-  divDescription.classList.add('inputDiv')
+  const divDescription = document.createElement("div");
+  divDescription.classList.add("inputDiv");
 
-  const inputDescription = document.createElement('input')
-  inputDescription.type = 'text'
-  inputDescription.id = 'inputTaskDescription'
-  inputDescription.name = 'inputTaskDescription'
-  inputDescription.required = true
+  const inputDescription = document.createElement("input");
+  inputDescription.type = "text";
+  inputDescription.id = "inputTaskDescription";
+  inputDescription.name = "inputTaskDescription";
+  inputDescription.required = true;
 
-  const labelDescription = document.createElement('label')
-  labelDescription.setAttribute('for', 'inputTaskDescription')
-  labelDescription.textContent = 'Task Description'
+  const labelDescription = document.createElement("label");
+  labelDescription.setAttribute("for", "inputTaskDescription");
+  labelDescription.textContent = "Task Description";
 
-  divDescription.appendChild(inputDescription)
-  divDescription.appendChild(labelDescription)
+  divDescription.appendChild(inputDescription);
+  divDescription.appendChild(labelDescription);
 
-  form.appendChild(divDescription)
+  form.appendChild(divDescription);
 
   // Task Priority
 
-  const ulPriority = document.createElement('ul')
-  ulPriority.classList.add('ulPriority')
+  const ulPriority = document.createElement("ul");
+  ulPriority.classList.add("ulPriority");
 
   // High Priority
-  const liCheckboxHigh = document.createElement('li')
+  const liCheckboxHigh = document.createElement("li");
 
-  const checkboxHigh = document.createElement('input')
-  checkboxHigh.type = 'radio'
-  checkboxHigh.classList.add('checkboxPriorityTask')
-  checkboxHigh.name = 'priority'
-  checkboxHigh.id = 'highPriorityTask'
-  checkboxHigh.value = 'High'
-  checkboxHigh.checked = true
-  checkboxHigh.required = true
+  const checkboxHigh = document.createElement("input");
+  checkboxHigh.type = "radio";
+  checkboxHigh.classList.add("checkboxPriorityTask");
+  checkboxHigh.name = "priority";
+  checkboxHigh.id = "highPriorityTask";
+  checkboxHigh.value = "High";
+  checkboxHigh.checked = true;
+  checkboxHigh.required = true;
 
-  const labelHigh = document.createElement('label')
-  labelHigh.setAttribute('for', 'highPriorityTask')
-  labelHigh.textContent = 'High'
+  const labelHigh = document.createElement("label");
+  labelHigh.setAttribute("for", "highPriorityTask");
+  labelHigh.textContent = "High";
 
-  liCheckboxHigh.appendChild(checkboxHigh)
-  liCheckboxHigh.appendChild(labelHigh)
+  liCheckboxHigh.appendChild(checkboxHigh);
+  liCheckboxHigh.appendChild(labelHigh);
 
-  ulPriority.appendChild(liCheckboxHigh)
+  ulPriority.appendChild(liCheckboxHigh);
 
   // Mid Priority
-  const liCheckboxMid = document.createElement('li')
+  const liCheckboxMid = document.createElement("li");
 
-  const checkboxMid = document.createElement('input')
-  checkboxMid.type = 'radio'
-  checkboxMid.classList.add('checkboxPriorityTask')
-  checkboxMid.name = 'priority'
-  checkboxMid.id = 'midPriorityTask'
-  checkboxMid.value = 'Medium'
+  const checkboxMid = document.createElement("input");
+  checkboxMid.type = "radio";
+  checkboxMid.classList.add("checkboxPriorityTask");
+  checkboxMid.name = "priority";
+  checkboxMid.id = "midPriorityTask";
+  checkboxMid.value = "Medium";
 
-  const labelMid = document.createElement('label')
-  labelMid.setAttribute('for', 'midPriorityTask')
-  labelMid.textContent = 'Medium'
+  const labelMid = document.createElement("label");
+  labelMid.setAttribute("for", "midPriorityTask");
+  labelMid.textContent = "Medium";
 
-  liCheckboxMid.appendChild(checkboxMid)
-  liCheckboxMid.appendChild(labelMid)
+  liCheckboxMid.appendChild(checkboxMid);
+  liCheckboxMid.appendChild(labelMid);
 
-  ulPriority.appendChild(liCheckboxMid)
+  ulPriority.appendChild(liCheckboxMid);
 
   // Low Priority
-  const liCheckboxLow = document.createElement('li')
+  const liCheckboxLow = document.createElement("li");
 
-  const checkboxLow = document.createElement('input')
-  checkboxLow.type = 'radio'
-  checkboxLow.classList.add('checkboxPriorityTask')
-  checkboxLow.name = 'priority'
-  checkboxLow.id = 'lowPriorityTask'
-  checkboxLow.value = 'Low'
+  const checkboxLow = document.createElement("input");
+  checkboxLow.type = "radio";
+  checkboxLow.classList.add("checkboxPriorityTask");
+  checkboxLow.name = "priority";
+  checkboxLow.id = "lowPriorityTask";
+  checkboxLow.value = "Low";
 
-  const labelLow = document.createElement('label')
-  labelLow.setAttribute('for', 'lowPriorityTask')
-  labelLow.textContent = 'Low'
+  const labelLow = document.createElement("label");
+  labelLow.setAttribute("for", "lowPriorityTask");
+  labelLow.textContent = "Low";
 
-  liCheckboxLow.appendChild(checkboxLow)
-  liCheckboxLow.appendChild(labelLow)
+  liCheckboxLow.appendChild(checkboxLow);
+  liCheckboxLow.appendChild(labelLow);
 
-  ulPriority.appendChild(liCheckboxLow)
+  ulPriority.appendChild(liCheckboxLow);
 
-  form.appendChild(ulPriority)
+  form.appendChild(ulPriority);
 
   // Project DueDate
-  const divDueDate = document.createElement('div')
-  divDueDate.classList.add('inputDiv')
+  const divDueDate = document.createElement("div");
+  divDueDate.classList.add("inputDiv");
 
   /* const date = new Date();
     let year = date.getFullYear();
     let month = (date.getMonth() + 1) <= 9 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
     let day = date.getDate() <= 9 ? '0' + date.getDate() : date.getDate(); */
 
-  const inputDueDate = document.createElement('input')
-  inputDueDate.type = 'date'
+  const inputDueDate = document.createElement("input");
+  inputDueDate.type = "date";
   // inputDueDate.min = `${year}-${month}-${day}`;
-  inputDueDate.id = 'inputTaskDueDate'
-  inputDueDate.name = 'inputTaskDueDate'
-  inputDueDate.required = true
+  inputDueDate.id = "inputTaskDueDate";
+  inputDueDate.name = "inputTaskDueDate";
+  inputDueDate.required = true;
 
-  divDueDate.appendChild(inputDueDate)
+  divDueDate.appendChild(inputDueDate);
 
-  form.appendChild(divDueDate)
+  form.appendChild(divDueDate);
 
   // Div Submit + Delete
-  const buttonsDiv = document.createElement('div')
-  buttonsDiv.id = 'taskButtonsDiv'
+  const buttonsDiv = document.createElement("div");
+  buttonsDiv.id = "taskButtonsDiv";
 
   // Submit Button
-  const submitButton = document.createElement('input')
-  submitButton.type = 'submit'
-  submitButton.textContent = 'Submit'
-  submitButton.id = 'submitTask'
+  const submitButton = document.createElement("input");
+  submitButton.type = "submit";
+  submitButton.textContent = "Submit";
+  submitButton.id = "submitTask";
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault()
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-    const dialog = document.getElementById('taskDialog')
-    const content = document.getElementById('content')
+    const dialog = document.getElementById("taskDialog");
+    const content = document.getElementById("content");
 
-    if (dialog.dataset.dialogType === 'create') {
-      createTask(content.dataset.projectId)
-    } else if (dialog.dataset.dialogType === 'edit') {
-      editTask(content.dataset.projectId, form.dataset.taskId)
+    if (dialog.dataset.dialogType === "create") {
+      createTask(content.dataset.projectId);
+    } else if (dialog.dataset.dialogType === "edit") {
+      editTask(content.dataset.projectId, form.dataset.taskId);
     }
 
-    inputTitle.value = ''
-    inputDescription.value = ''
-    checkboxHigh.checked = true
-    inputDueDate.value = ''
+    inputTitle.value = "";
+    inputDescription.value = "";
+    checkboxHigh.checked = true;
+    inputDueDate.value = "";
 
-    dialog.close()
-  })
+    dialog.close();
+  });
 
   // Delete Button
-  const deleteButton = document.createElement('button')
-  deleteButton.type = 'button'
-  deleteButton.textContent = 'Delete Task'
-  deleteButton.id = 'deleteTaskBtn'
+  const deleteButton = document.createElement("button");
+  deleteButton.type = "button";
+  deleteButton.textContent = "Delete Task";
+  deleteButton.id = "deleteTaskBtn";
 
-  buttonsDiv.appendChild(submitButton)
-  buttonsDiv.appendChild(deleteButton)
+  buttonsDiv.appendChild(submitButton);
+  buttonsDiv.appendChild(deleteButton);
 
-  form.appendChild(buttonsDiv)
+  form.appendChild(buttonsDiv);
 
-  return form
+  return form;
 }
 
-export function createTaskDom (projectId, id) {
-  const title = projects[projectId].todos[id].title
-  const description = projects[projectId].todos[id].description
-  const priority = projects[projectId].todos[id].priority
-  const dueDate = format(projects[projectId].todos[id].dueDate, 'd MMMM yyyy')
-  const ago = formatDistance(projects[projectId].todos[id].dueDate, new Date(), { addSuffix: true })
+export function createTaskDom(projectId, id) {
+  const title = projects[projectId].todos[id].title;
+  const description = projects[projectId].todos[id].description;
+  const priority = projects[projectId].todos[id].priority;
+  const dueDate = format(projects[projectId].todos[id].dueDate, "d MMMM yyyy");
+  const ago = formatDistance(
+    projects[projectId].todos[id].dueDate,
+    new Date(),
+    { addSuffix: true },
+  );
 
-  const tasksDiv = document.getElementById('tasksDiv')
+  const tasksDiv = document.getElementById("tasksDiv");
 
-  const task = document.createElement('div')
-  task.classList.add('task')
-  task.dataset.taskId = id
-  if (priority === 'High') { task.classList.add('highTask') } else if (priority === 'Medium') { task.classList.add('mediumTask') } else if (priority === 'Low') { task.classList.add('lowTask') }
-  task.addEventListener('click', () => {
-    const dialog = document.getElementById('taskDialog')
-    dialog.dataset.dialogType = 'edit'
+  const task = document.createElement("div");
+  task.classList.add("task");
+  task.dataset.taskId = id;
+  if (priority === "High") {
+    task.classList.add("highTask");
+  } else if (priority === "Medium") {
+    task.classList.add("mediumTask");
+  } else if (priority === "Low") {
+    task.classList.add("lowTask");
+  }
+  task.addEventListener("click", () => {
+    const dialog = document.getElementById("taskDialog");
+    dialog.dataset.dialogType = "edit";
 
-    const form = dialog.querySelector('form')
-    form.dataset.taskId = id
+    const form = dialog.querySelector("form");
+    form.dataset.taskId = id;
 
-    const dialogTitle = dialog.querySelector('.dialogHeader p')
-    dialogTitle.textContent = 'Edit task'
+    const dialogTitle = dialog.querySelector(".dialogHeader p");
+    dialogTitle.textContent = "Edit task";
 
-    const inputTitle = document.getElementById('inputTaskTitle')
+    const inputTitle = document.getElementById("inputTaskTitle");
     // projects[projectId].todos[projectId].title
-    inputTitle.value = `${title}`
+    inputTitle.value = `${title}`;
 
-    const inputDescription = document.getElementById('inputTaskDescription')
-    inputDescription.value = `${description}`
+    const inputDescription = document.getElementById("inputTaskDescription");
+    inputDescription.value = `${description}`;
 
-    const priorityOptions = document.getElementsByClassName('checkboxPriorityTask')
-    const priorityOptionsArr = Array.from(priorityOptions)
+    const priorityOptions = document.getElementsByClassName(
+      "checkboxPriorityTask",
+    );
+    const priorityOptionsArr = Array.from(priorityOptions);
     priorityOptionsArr.forEach((option) => {
-      if (option.value === priority) { option.checked = true } else { option.checked = false }
-    })
+      if (option.value === priority) {
+        option.checked = true;
+      } else {
+        option.checked = false;
+      }
+    });
 
-    const inputDueDate = document.getElementById('inputTaskDueDate')
-    const dateForInput = projects[projectId].todos[id].dueDate
-    inputDueDate.value = `${dateForInput}`
+    const inputDueDate = document.getElementById("inputTaskDueDate");
+    const dateForInput = projects[projectId].todos[id].dueDate;
+    inputDueDate.value = `${dateForInput}`;
 
-    let deleteButton = document.getElementById('deleteTaskBtn')
-    deleteButton.classList.remove('hide')
-    const refreshButton = deleteButton.cloneNode(true)
-    deleteButton.parentNode.replaceChild(refreshButton, deleteButton)
-    deleteButton = refreshButton.cloneNode(true)
-    refreshButton.parentNode.replaceChild(deleteButton, refreshButton)
-    deleteButton.addEventListener('click', () => {
-      deleteTask(projectId, id)
-      dialog.close()
-    })
+    let deleteButton = document.getElementById("deleteTaskBtn");
+    deleteButton.classList.remove("hide");
+    const refreshButton = deleteButton.cloneNode(true);
+    deleteButton.parentNode.replaceChild(refreshButton, deleteButton);
+    deleteButton = refreshButton.cloneNode(true);
+    refreshButton.parentNode.replaceChild(deleteButton, refreshButton);
+    deleteButton.addEventListener("click", () => {
+      deleteTask(projectId, id);
+      dialog.close();
+    });
 
-    dialog.showModal()
-  })
+    dialog.showModal();
+  });
 
-  const taskDone = document.createElement('input')
-  taskDone.type = 'checkbox'
-  if (projects[projectId].todos[id].done) { taskDone.checked = true }
-  taskDone.classList.add('taskDone')
-  taskDone.addEventListener('click', (e) => {
-    e.stopPropagation()
-    projects[projectId].todos[id].done = !projects[projectId].todos[id].done
-    return saveInStorage('projects', projects)
-  })
+  const taskDone = document.createElement("input");
+  taskDone.type = "checkbox";
+  if (projects[projectId].todos[id].done) {
+    taskDone.checked = true;
+  }
+  taskDone.classList.add("taskDone");
+  taskDone.addEventListener("click", (e) => {
+    e.stopPropagation();
+    projects[projectId].todos[id].done = !projects[projectId].todos[id].done;
+    return saveInStorage("projects", projects);
+  });
 
-  const taskTitle = document.createElement('p')
-  taskTitle.classList.add('taskTitle')
-  taskTitle.textContent = `${title}`
+  const taskTitle = document.createElement("p");
+  taskTitle.classList.add("taskTitle");
+  taskTitle.textContent = `${title}`;
 
-  const taskDate = document.createElement('p')
-  taskDate.classList.add('taskDate')
-  taskDate.textContent = `${dueDate} (${ago})`
+  const taskDate = document.createElement("p");
+  taskDate.classList.add("taskDate");
+  taskDate.textContent = `${dueDate} (${ago})`;
 
-  task.appendChild(taskDone)
-  task.appendChild(taskTitle)
-  task.appendChild(taskDate)
+  task.appendChild(taskDone);
+  task.appendChild(taskTitle);
+  task.appendChild(taskDate);
 
-  tasksDiv.insertBefore(task, tasksDiv.lastChild)
+  tasksDiv.insertBefore(task, tasksDiv.lastChild);
 }
 
-export function editTaskDom (id, title, description, priority, dueDate, projectId) {
-  let myTask = document.querySelector(`.task[data-task-id="${id}"]`)
-  myTask.classList.remove('highTask', 'mediumTask', 'lowTask')
-  myTask.classList.add(`${priority.toLowerCase()}Task`)
+export function editTaskDom(
+  id,
+  title,
+  description,
+  priority,
+  dueDate,
+  projectId,
+) {
+  let myTask = document.querySelector(`.task[data-task-id="${id}"]`);
+  myTask.classList.remove("highTask", "mediumTask", "lowTask");
+  myTask.classList.add(`${priority.toLowerCase()}Task`);
 
-  const myTaskTitle = myTask.querySelector('.taskTitle')
-  myTaskTitle.textContent = `${title}`
+  const myTaskTitle = myTask.querySelector(".taskTitle");
+  myTaskTitle.textContent = `${title}`;
 
-  const myTaskDueDate = myTask.querySelector('.taskDate')
-  const formatDueDate = format(dueDate, 'd MMMM yyyy')
-  const ago = formatDistance(projects[projectId].todos[id].dueDate, new Date(), { addSuffix: true })
-  myTaskDueDate.textContent = `${formatDueDate} (${ago})`
+  const myTaskDueDate = myTask.querySelector(".taskDate");
+  const formatDueDate = format(dueDate, "d MMMM yyyy");
+  const ago = formatDistance(
+    projects[projectId].todos[id].dueDate,
+    new Date(),
+    { addSuffix: true },
+  );
+  myTaskDueDate.textContent = `${formatDueDate} (${ago})`;
 
-  const refreshMyTask = myTask.cloneNode(true)
-  myTask.parentNode.replaceChild(refreshMyTask, myTask)
-  myTask = refreshMyTask.cloneNode(true)
-  refreshMyTask.parentNode.replaceChild(myTask, refreshMyTask)
-  myTask.addEventListener('click', () => {
-    const dialog = document.getElementById('taskDialog')
-    dialog.dataset.dialogType = 'edit'
+  const refreshMyTask = myTask.cloneNode(true);
+  myTask.parentNode.replaceChild(refreshMyTask, myTask);
+  myTask = refreshMyTask.cloneNode(true);
+  refreshMyTask.parentNode.replaceChild(myTask, refreshMyTask);
+  myTask.addEventListener("click", () => {
+    const dialog = document.getElementById("taskDialog");
+    dialog.dataset.dialogType = "edit";
 
-    const form = dialog.querySelector('form')
-    form.dataset.taskId = id
+    const form = dialog.querySelector("form");
+    form.dataset.taskId = id;
 
-    const dialogTitle = dialog.querySelector('.dialogHeader p')
-    dialogTitle.textContent = 'Edit task'
+    const dialogTitle = dialog.querySelector(".dialogHeader p");
+    dialogTitle.textContent = "Edit task";
 
-    const inputTitle = document.getElementById('inputTaskTitle')
+    const inputTitle = document.getElementById("inputTaskTitle");
     // projects[projectId].todos[projectId].title
-    inputTitle.value = `${title}`
+    inputTitle.value = `${title}`;
 
-    const inputDescription = document.getElementById('inputTaskDescription')
-    inputDescription.value = `${description}`
+    const inputDescription = document.getElementById("inputTaskDescription");
+    inputDescription.value = `${description}`;
 
-    const priorityOptions = document.getElementsByClassName('checkboxPriorityTask')
-    const priorityOptionsArr = Array.from(priorityOptions)
+    const priorityOptions = document.getElementsByClassName(
+      "checkboxPriorityTask",
+    );
+    const priorityOptionsArr = Array.from(priorityOptions);
     priorityOptionsArr.forEach((option) => {
-      if (option.value === priority) { option.checked = true } else { option.checked = false }
-    })
+      if (option.value === priority) {
+        option.checked = true;
+      } else {
+        option.checked = false;
+      }
+    });
 
-    const inputDueDate = document.getElementById('inputTaskDueDate')
-    inputDueDate.value = `${dueDate}`
+    const inputDueDate = document.getElementById("inputTaskDueDate");
+    inputDueDate.value = `${dueDate}`;
 
-    let deleteButton = document.getElementById('deleteTaskBtn')
-    deleteButton.classList.remove('hide')
-    const refreshButton = deleteButton.cloneNode(true)
-    deleteButton.parentNode.replaceChild(refreshButton, deleteButton)
-    deleteButton = refreshButton.cloneNode(true)
-    refreshButton.parentNode.replaceChild(deleteButton, refreshButton)
-    deleteButton.addEventListener('click', () => {
-      deleteTask(projectId, id)
-      dialog.close()
-    })
+    let deleteButton = document.getElementById("deleteTaskBtn");
+    deleteButton.classList.remove("hide");
+    const refreshButton = deleteButton.cloneNode(true);
+    deleteButton.parentNode.replaceChild(refreshButton, deleteButton);
+    deleteButton = refreshButton.cloneNode(true);
+    refreshButton.parentNode.replaceChild(deleteButton, refreshButton);
+    deleteButton.addEventListener("click", () => {
+      deleteTask(projectId, id);
+      dialog.close();
+    });
 
-    dialog.showModal()
-  })
+    dialog.showModal();
+  });
 
-  const taskDone = myTask.querySelector('.taskDone')
-  if (projects[projectId].todos[id].done) { taskDone.checked = true }
-  taskDone.classList.add('taskDone')
-  taskDone.addEventListener('click', (e) => {
-    e.stopPropagation()
-    projects[projectId].todos[id].done = !projects[projectId].todos[id].done
-    return saveInStorage('projects', projects)
-  })
+  const taskDone = myTask.querySelector(".taskDone");
+  if (projects[projectId].todos[id].done) {
+    taskDone.checked = true;
+  }
+  taskDone.classList.add("taskDone");
+  taskDone.addEventListener("click", (e) => {
+    e.stopPropagation();
+    projects[projectId].todos[id].done = !projects[projectId].todos[id].done;
+    return saveInStorage("projects", projects);
+  });
 }
 
-export function deleteTaskDom (id) {
-  const myTask = document.querySelector(`.task[data-task-id="${id}"]`)
-  return myTask.remove()
+export function deleteTaskDom(id) {
+  const myTask = document.querySelector(`.task[data-task-id="${id}"]`);
+  return myTask.remove();
 }
 
-export function deleteAllTasksDom () {
-  const tasks = document.getElementsByClassName('task')
-  if (tasks.length === 0) { return }
-  const tasksArr = Array.from(tasks)
+export function deleteAllTasksDom() {
+  const tasks = document.getElementsByClassName("task");
+  if (tasks.length === 0) {
+    return;
+  }
+  const tasksArr = Array.from(tasks);
   return tasksArr.forEach((task) => {
-    task.remove()
-  })
+    task.remove();
+  });
 }
